@@ -1,11 +1,6 @@
-# Element Plus with Nuxt 3 Minimal Starter
+# 麻将段位系统
 
-- SSR Preview: <https://element-plus-nuxt.vercel.app/>
-- SSG Preview: <https://nuxt-starter.element-plus.org/>
-
-We recommend to look at the [Nuxt 3 Docs](https://nuxt.com/) and [Element Plus Docs](https://element-plus.org/).
-
-> If you are looking for a Vite + Vue + Element Plus starter, check out [element-plus-vite-starter](https://github.com/element-plus/element-plus-vite-starter/).
+本项目是一个立直麻将段位系统。
 
 ## Setup
 
@@ -40,14 +35,6 @@ Checkout the [deployment documentation](https://nuxt.com/docs/getting-started/de
 ## Deploy
 
 You need set `NITRO_PRESET=vercel-edge`, see [Nuxt on Vercel](https://vercel.com/docs/frameworks/nuxt#edge-functions).
-
-## Ref
-
-- [vitesse-nuxt3](https://github.com/antfu/vitesse-nuxt3)
-
-# 麻将段位系统
-
-本项目是一个立直麻将段位系统。
 
 ## 计分规则
 
