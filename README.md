@@ -36,6 +36,25 @@ Checkout the [deployment documentation](https://nuxt.com/docs/getting-started/de
 
 You need set `NITRO_PRESET=vercel-edge`, see [Nuxt on Vercel](https://vercel.com/docs/frameworks/nuxt#edge-functions).
 
+## 前端设计
+
+### 个人主页
+
+| 显示内容                                         | 是否实现 |
+| ------------------------------------------------ | -------- |
+| 排名                                             |          |
+| 总局数                                           |          |
+| 段位                                             |          |
+| 最高点数                                         |          |
+| 平均点数                                         |          |
+| 平均顺位                                         |          |
+| 顺位饼状图                                       |          |
+| 数据维度图（火力、防守、稳定、运势、技术、进攻） |          |
+
+## 后端及接口设计
+
+[Apifox](https://apifox.com/apidoc/shared/b793d103-e1b8-4e3c-aac3-ad5f49dd785d)
+
 ## 计分规则
 
 ### 雀魂规 - 线下改版
