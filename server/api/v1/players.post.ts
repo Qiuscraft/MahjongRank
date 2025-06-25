@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
       });
     }
     
-    console.log(error)
+    console.error(error)
     
     throw createError({
       statusCode: 500,
