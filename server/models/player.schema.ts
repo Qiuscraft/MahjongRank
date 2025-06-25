@@ -1,6 +1,6 @@
 import { defineMongooseModel } from '#nuxt/mongoose'
 
-export const Player = defineMongooseModel({
+export const PlayerSchema = defineMongooseModel({
   name: 'Player',
   schema: {
     name: {
@@ -8,11 +8,5 @@ export const Player = defineMongooseModel({
       required: true,
       unique: true,
     },
-  },
-  options: {
-    
-  },
-  hooks(schema) {
-
   },
 })
