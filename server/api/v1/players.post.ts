@@ -23,6 +23,15 @@ export default defineEventHandler(async (event) => {
     }
 
   } catch (error) {
+    if (error.code === 11000) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'Player name already exists',
+      });
+    }
+    
+    console.log(error)
+    
     throw createError({
       statusCode: 500,
       statusMessage: 'Unknown Error',
