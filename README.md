@@ -22,6 +22,8 @@ yarn install
 bun install
 ```
 
+新建`.env`文件，复制`.env.example`中的内容到`.env`中，并配置所有环境变量。
+
 ### 1.2 开发服务器
 
 在`http://localhost:3000`启动开发服务器：
