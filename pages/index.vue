@@ -1,11 +1,13 @@
 <template>
   <div>
     <UInputMenu 
+      ref="inputMenuRef"
       v-model="name" 
       v-model:open="open"
       :items="names" 
       @focus="open = true"
       trailing-icon=""
+      icon="i-lucide-search"
     />
   </div>
 </template>
@@ -19,6 +21,18 @@ interface Player {
 const names = ref<string[]>([])
 const name = ref<string>('')
 const open = ref<boolean>(false)
+const inputMenuRef = ref()
+
+// 监听选择事件，选择后自动关闭菜单并取消聚焦
+watch(name, (newValue, oldValue) => {
+  if (newValue !== oldValue && open.value) {
+    open.value = false
+    // 取消聚焦
+    nextTick(() => {
+      inputMenuRef.value?.inputRef?.$el?.blur()
+    })
+  }
+})
 
 const searchName = async () => {
   try {
