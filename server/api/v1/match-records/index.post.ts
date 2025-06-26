@@ -135,7 +135,7 @@ export default defineEventHandler(async (event) => {
 
   } catch (error: any) {
     // 如果是我们抛出的错误，直接重新抛出
-    // 这里判断条件不完整，但应该无所谓
+    // TODO: 这里判断条件不完整，但应该无所谓
     if (error.statusCode === 404) {
       throw error;
     }
