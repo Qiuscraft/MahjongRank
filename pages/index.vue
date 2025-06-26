@@ -55,7 +55,11 @@ const createFilter = (queryString: string) => {
 }
 
 const handleSelect = (item: Record<string, any>) => {
-  console.log(item)
+  // 更新路由路径，将选中的玩家名称作为查询参数
+  navigateTo({
+    path: '/',
+    query: { name: item.value }
+  })
 }
 
 onMounted(async () => {
