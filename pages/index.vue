@@ -29,7 +29,7 @@ const loadAll = async (): Promise<NameItem[]> => {
     
     return result.map(player => ({ value: player.name }));
   } catch (error) {
-    ElMessage.error(`Error fetching players: ${error}`);
+    ElMessage.error(`Error fetching players: ${error.statusMessage}`);
     return [];
   }
 }
