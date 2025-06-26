@@ -4,7 +4,8 @@
       v-model="name" 
       v-model:open="open"
       :items="names" 
-      @focus="open = true" 
+      @focus="open = true"
+      trailing-icon=""
     />
   </div>
 </template>
