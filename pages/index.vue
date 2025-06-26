@@ -1,62 +1,31 @@
 <template>
   <div>
-    <UInputMenu 
-      ref="inputMenuRef"
-      v-model="name" 
-      v-model:open="open"
-      :items="names" 
-      @focus="open = true"
-      trailing-icon=""
-      icon="i-lucide-search"
-    />
+    
   </div>
 </template>
 
 <script lang="ts" setup>
-interface Player {
-  _id: string;
-  name: string;
-}
-
 const names = ref<string[]>([])
 const name = ref<string>('')
-const open = ref<boolean>(false)
-const inputMenuRef = ref()
 
-// 监听选择事件，选择后自动关闭菜单并取消聚焦
-watch(name, (newValue, oldValue) => {
-  if (newValue !== oldValue && open.value) {
-    open.value = false
-    // 取消聚焦
-    nextTick(() => {
-      inputMenuRef.value?.inputRef?.$el?.blur()
-    })
-  }
-})
-
-const searchName = async () => {
+const search = async (searchName: string) => {
   try {
-    const result = await $fetch<Player[]>(`/api/v1/players`, {
+    const result = await $fetch(`/api/v1/players`, {
       method: 'GET',
       params: {
-        search_name: name.value,
+        search_name: searchName,
       }
     });
     
     names.value = result.map(player => player.name);
     
-  } catch (error: any) {
-    const toast = useToast()
-    toast.add({
-      title: 'Failed to fetch player names.',
-      description: error.statusMessage || 'Unknown error',
-      color: 'error',
-    });
+  } catch (error) {
+    console.error('Error fetching players:', error);
   }
 }
 
 onMounted(async () => {
-  await searchName();
+  await search(name.value);
 });
 
 </script>

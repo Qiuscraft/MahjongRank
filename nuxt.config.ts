@@ -6,18 +6,11 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     'nuxt-mongoose',
-    '@nuxt/ui',
   ],
   mongoose: {
     uri: process.env.MONGODB_URI,
     options: {},
     modelsDir: 'models',
     devtools: true,
-  },
-  css: ['~/assets/css/main.css'],
-  vite: {
-    plugins: [
-      tailwindcss(),
-    ],
   },
 })
