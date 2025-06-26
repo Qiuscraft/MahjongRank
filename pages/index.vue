@@ -4,7 +4,6 @@
       v-model="name"
       :fetch-suggestions="querySearchAsync"
       placeholder="请输入你的用户名..."
-      @select="handleSelect"
     />
   </div>
 </template>
@@ -28,8 +27,8 @@ const loadAll = async (): Promise<NameItem[]> => {
     });
     
     return result.map(player => ({ value: player.name }));
-  } catch (error) {
-    ElMessage.error(`Error fetching players: ${error.statusMessage}`);
+  } catch (error: any) {
+    ElMessage.error(`Error fetching players: ${error.statusMessage || 'Unknown error'}`);
     return [];
   }
 }
