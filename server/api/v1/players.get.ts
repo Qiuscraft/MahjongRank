@@ -1,12 +1,10 @@
+import {searchPlayer} from "~/server/db-operations/player";
+
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const search_name = query.search_name || '';
+  const search_name: string = query.search_name as string || '';
   try {
-    const searchQuery = search_name 
-      ? { name: { $regex: search_name, $options: 'i' } }
-      : {};
-    
-    return PlayerSchema.find(searchQuery).select('-__v')
+    return searchPlayer(search_name);
   } catch (error) {
     console.error('Error fetching players:', error);
     throw createError({
