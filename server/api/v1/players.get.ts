@@ -2,7 +2,7 @@ import {searchPlayer} from "~/server/db-operations/player";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  const search_name: string = query.search_name as string || '';
+  const search_name: string = query.search_name as string;
   try {
     return searchPlayer(search_name);
   } catch (error) {
