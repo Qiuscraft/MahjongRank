@@ -20,6 +20,7 @@ async function loadNames() {
     ElMessage.error(`Error fetching players: ${error.statusMessage || 'Unknown error'}`)
     names.value = []
   }
+  names.value.sort((a, b) => a.value.localeCompare(b.value))
 }
 
 function search(queryString: string) {
