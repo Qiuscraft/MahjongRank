@@ -1,50 +1,23 @@
 <template>
   <div>
-    <el-autocomplete
-      v-model="name"
-      :fetch-suggestions="search"
-      placeholder="请输入你的用户名..."
-    />
+    <name-searcher v-model="name" @select="handleNameSelect" />
   </div>
 </template>
 
 <script lang="ts" setup>
-import type {Player} from '~/types/player'
+const route = useRoute();
+const router = useRouter();
 
-const name = ref('')
+// 从路由参数初始化name值
+const name = ref<string>((route.query.name as string) || '');
 
-interface NameSelectItem {
-  value: string
-}
-
-const names = ref<NameSelectItem[]>([])
-
-async function loadNames() {
-  try {
-    const result = await $fetch<Player[]>(`/api/v1/players`, {
-      method: 'GET',
-    })
-    
-    names.value = result.map(player => ({ value: player.name }))
-  } catch (error: any) {
-    ElMessage.error(`Error fetching players: ${error.statusMessage || 'Unknown error'}`)
-    names.value = []
+// 处理name选择事件，更新路由参数
+function handleNameSelect(item: any) {
+  const selectedName = item?.value || item;
+  if (selectedName) {
+    router.push({ query: { ...route.query, name: selectedName } });
   }
 }
-
-function search(queryString: string) {
-  return queryString
-    ? names.value.filter((restaurant: NameSelectItem) => {
-      return (
-          restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-      )
-    })
-    : names.value
-}
-
-onMounted(async () => {
-  await loadNames()
-})
 </script>
 
 <style>
