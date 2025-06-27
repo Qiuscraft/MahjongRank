@@ -1,5 +1,5 @@
-import {MatchRecord, StartDirection} from "~/types/match-record";
-import {subRecordPlayerNameToPlayerId} from "~/server/db-operations/match-record";
+import {MatchRecord, MatchRecordUseId, StartDirection} from "~/types/match-record";
+import {matchRecordPlayerIdToPlayerName, subRecordPlayerNameToPlayerId} from "~/server/db-operations/match-record";
 import {createMyError, isMyError} from "~/server/error/error-utils";
 
 function isSubMatchRecord(data: any): boolean {
@@ -93,13 +93,15 @@ export default defineEventHandler(async (event) => {
       subRecordPlayerNameToPlayerId(record_4),
     ]);
 
-    return await MatchRecordSchema.insertOne({
+    const inserted = await MatchRecordSchema.insertOne({
       record_1: record_1_edited,
       record_2: record_2_edited,
       record_3: record_3_edited,
       record_4: record_4_edited,
       created_at: new Date(),
     })
+
+    return await matchRecordPlayerIdToPlayerName(inserted as unknown as MatchRecordUseId);
 
   } catch (error: any) {
     if (isMyError(error)) {

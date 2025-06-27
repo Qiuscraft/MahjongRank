@@ -6,6 +6,14 @@ export interface MatchRecord {
   created_at: string;
 }
 
+export interface MatchRecordUseId {
+  record_1: SubMatchRecordUseId;
+  record_2: SubMatchRecordUseId;
+  record_3: SubMatchRecordUseId;
+  record_4: SubMatchRecordUseId;
+  created_at: string;
+}
+
 /**
  * SubMatchRecord
  */
