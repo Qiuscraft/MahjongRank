@@ -1,10 +1,8 @@
-import { PlayerSchema } from "~/server/models/player.schema";
+import {registerPlayer} from "~/server/db-operations/player";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-
   const name = body.name;
-
   if (!name) {
     throw createError({
       statusCode: 400,
@@ -13,17 +11,9 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const insertedResult = await PlayerSchema.insertOne({
-      name: name,
-    });
-
-    return {
-      _id: insertedResult._id,
-      name: insertedResult.name,
-    }
-
-  } catch (error) {
-    if (error.code === 11000) {
+    return registerPlayer(name);
+  } catch (error: any) {
+    if (error.code && error.code === 11000) {
       throw createError({
         statusCode: 500,
         statusMessage: 'Player name already exists',
