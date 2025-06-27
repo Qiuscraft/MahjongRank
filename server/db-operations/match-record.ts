@@ -1,6 +1,7 @@
 import {MatchRecord} from "~/types/match-record";
 import {getPlayerById, getPlayerIdByName} from "~/server/db-operations/player";
 import {MatchRecordSchema} from "~/server/models/match-record.schema";
+import {ErrorCause} from "~/server/error/error-cause";
 
 
 /**
@@ -12,7 +13,7 @@ import {MatchRecordSchema} from "~/server/models/match-record.schema";
 export async function getMatchRecordsByPlayerName(name: string): Promise<MatchRecord[]> {
   const playerId = await getPlayerIdByName(name);
   if (!playerId) {
-    throw createError('Player not found.');
+    throw createError({cause: ErrorCause.PlayerNotFound});
   }
   return getMatchRecordsByPlayerId(playerId);
 }

@@ -1,4 +1,5 @@
 import {getMatchRecordsByPlayerName} from "~/server/db-operations/match-record";
+import {isMyError} from "~/server/error/error-utils";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -13,10 +14,10 @@ export default defineEventHandler(async (event) => {
   try {
     return await getMatchRecordsByPlayerName(name);
   } catch (error: any) {
-    if (error.message === 'Player not found.') {
+    if (isMyError(error)) {
       throw createError({
-        statusCode: 404,
-        statusMessage: 'Player Not Found.'
+        statusCode: 500,
+        statusMessage: error.cause,
       });
     }
 
