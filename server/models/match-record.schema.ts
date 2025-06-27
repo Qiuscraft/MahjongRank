@@ -28,8 +28,8 @@ export const MatchRecordSchema = defineMongooseModel({
     record_3: SubMatchRecordSchema,
     record_4: SubMatchRecordSchema,
     created_at: {
-      type: Date,
-      default: Date.now
+      type: 'string',
+      required: true,
     },
   },
 })
