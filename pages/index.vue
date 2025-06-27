@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { Player } from '~/types/player'
+import type {Player} from '~/types/player'
 
 const name = ref('')
 
@@ -33,15 +33,13 @@ async function loadNames() {
 }
 
 function search(queryString: string) {
-  const results = queryString
+  return queryString
     ? names.value.filter((restaurant: NameSelectItem) => {
       return (
-        restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+          restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
       )
     })
     : names.value
-
-  return results
 }
 
 onMounted(async () => {
