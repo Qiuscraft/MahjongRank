@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     console.error('Error fetching players:', error);
     throw createError({
       statusCode: 500,
-      statusMessage: 'Unknown Error'
+      statusMessage: '未知错误。'
     });
   }
 })

@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
   if (!isMatchRecord(body)) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid match record format.',
+      statusMessage: '参数不正确。',
     });
   }
 
@@ -71,7 +71,7 @@ export default defineEventHandler(async (event) => {
   if (!validateStartDirections(body)) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid start_direction configuration.',
+      statusMessage: '玩家起家配置不正确，应为东南西北各一家。',
     });
   }
 
@@ -79,7 +79,7 @@ export default defineEventHandler(async (event) => {
   if (!validatePointsTotal(body)) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Invalid points total.',
+      statusMessage: '点数总数不正确，应为100000.',
     });
   }
 
@@ -112,7 +112,7 @@ export default defineEventHandler(async (event) => {
     // 处理其他未预期的错误
     throw createError({
       statusCode: 500,
-      statusMessage: 'Unknown Error.',
+      statusMessage: '未知错误。',
     });
   }
 

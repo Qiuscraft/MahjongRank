@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   if (!query.name) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Name parameter is required.'
+      statusMessage: '请输入玩家名称。'
     });
   }
   const name: string = query.name.toString();
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     console.error('Error fetching match records:', error)
     throw createError({
       statusCode: 500,
-      statusMessage: 'Unknown Error.'
+      statusMessage: '未知错误。'
     });
   }
 })

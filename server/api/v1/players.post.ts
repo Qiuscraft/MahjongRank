@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
   if (!name) {
     throw createError({
       statusCode: 400,
-      statusMessage: 'Name is required',
+      statusMessage: '请输入玩家名称。',
     });
   }
 
@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
     if (error.code && error.code === 11000) {
       throw createError({
         statusCode: 500,
-        statusMessage: 'Player name already exists',
+        statusMessage: '玩家名称已存在。',
       });
     }
     
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
     
     throw createError({
       statusCode: 500,
-      statusMessage: 'Unknown Error',
+      statusMessage: '未知错误。',
     });
   }
 
