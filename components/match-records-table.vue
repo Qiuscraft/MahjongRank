@@ -62,11 +62,89 @@ defineExpose({
   loadData
 });
 
+function mapStartDirection(direction: StartDirection): string {
+  switch (direction) {
+    case StartDirection.East:
+      return '东';
+    case StartDirection.South:
+      return '南';
+    case StartDirection.West:
+      return '西';
+    case StartDirection.North:
+      return '北';
+    default:
+      return '';
+  }
+}
+
+function formatCreatedAt(dateString: string): string {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+}
+
 </script>
 
 <template>
   <div>
-    {{data}}
+    <el-table :data="data" empty-text="暂无数据">
+      <el-table-column label="录入时间">
+        <template #default="scope">
+          <div>
+            {{formatCreatedAt(scope.row.created_at)}}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="1st">
+        <el-table-column prop="record_1.player_name" label="玩家" />
+        <el-table-column prop="record_1.points" label="分数" width="80" />
+        <el-table-column label="起家" width="55">
+          <template #default="scope">
+            <div>
+              {{mapStartDirection(scope.row.record_1.start_direction)}}
+            </div>
+          </template>
+        </el-table-column>
+      </el-table-column>
+      <el-table-column label="2nd">
+        <el-table-column prop="record_2.player_name" label="玩家" />
+        <el-table-column prop="record_2.points" label="分数" width="80" />
+        <el-table-column label="起家" width="55">
+          <template #default="scope">
+            <div>
+              {{mapStartDirection(scope.row.record_2.start_direction)}}
+            </div>
+          </template>
+        </el-table-column>
+      </el-table-column>
+      <el-table-column label="3rd">
+        <el-table-column prop="record_3.player_name" label="玩家" />
+        <el-table-column prop="record_3.points" label="分数" width="80" />
+        <el-table-column label="起家" width="55">
+          <template #default="scope">
+            <div>
+              {{mapStartDirection(scope.row.record_3.start_direction)}}
+            </div>
+          </template>
+        </el-table-column>
+      </el-table-column>
+      <el-table-column label="4th">
+        <el-table-column prop="record_4.player_name" label="玩家" />
+        <el-table-column prop="record_4.points" label="分数" width="80" />
+        <el-table-column label="起家" width="55">
+          <template #default="scope">
+            <div>
+              {{mapStartDirection(scope.row.record_4.start_direction)}}
+            </div>
+          </template>
+        </el-table-column>
+      </el-table-column>
+    </el-table>
+
   </div>
 </template>
 
