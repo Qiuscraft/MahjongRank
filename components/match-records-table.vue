@@ -87,6 +87,10 @@ function formatCreatedAt(dateString: string): string {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
+function rowFormatCreatedAt(row: MatchRecord): string {
+  return formatCreatedAt(row.created_at);
+}
+
 const tableRowClassName = ({
                              row,
                              rowIndex,
@@ -109,14 +113,8 @@ const tableRowClassName = ({
 
 <template>
   <div>
-    <el-table :data="data" empty-text="暂无数据" :row-class-name="tableRowClassName">
-      <el-table-column label="录入时间">
-        <template #default="scope">
-          <div>
-            {{formatCreatedAt(scope.row.created_at)}}
-          </div>
-        </template>
-      </el-table-column>
+    <el-table :data="data" empty-text="暂无数据" :row-class-name="tableRowClassName" :default-sort="{ prop: 'created_at', order: 'descending' } ">
+      <el-table-column prop="created_at" :formatter="rowFormatCreatedAt" label="录入时间" sortable />
       <el-table-column label="1st">
         <el-table-column prop="record_1.player_name" label="玩家" />
         <el-table-column prop="record_1.points" label="分数" width="80" />
