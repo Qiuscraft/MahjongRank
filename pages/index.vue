@@ -1,6 +1,7 @@
 <template>
   <div>
     <name-searcher v-model="inputtingName" @select="handleNameSelect" />
+    <data-displayer v-if="selectingName" :data="data" :name="selectingName" />
     <match-records-table v-if="selectingName" :data="data" :name="selectingName" />
   </div>
 </template>
