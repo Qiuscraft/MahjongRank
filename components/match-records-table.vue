@@ -93,10 +93,8 @@ function rowFormatCreatedAt(row: MatchRecord): string {
 
 const tableRowClassName = ({
                              row,
-                             rowIndex,
                            }: {
   row: MatchRecord
-  rowIndex: number
 }) => {
   if (row.record_1.player_name === props.name) {
     return 'success-row'
