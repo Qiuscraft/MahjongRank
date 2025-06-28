@@ -1,4 +1,4 @@
-import {Player} from "~/types/player";
+import {Player, Rank} from "~/types/player";
 import {PlayerSchema} from "~/server/models/player.schema";
 
 export async function searchPlayer(name: string): Promise<Player[]> {
@@ -9,9 +9,9 @@ export async function searchPlayer(name: string): Promise<Player[]> {
   const players = await PlayerSchema.find(searchQuery).select('-__v');
   return players.map(player => ({
     _id: player._id.toString(),
-    name: player.name,
-    rank: player.rank,
-    pt: player.pt,
+    name: player.name.toString(),
+    rank: player.rank.toString() as Rank,
+    pt: Number(player.pt),
   }));
 }
 
@@ -24,9 +24,9 @@ export async function registerPlayer(name: string): Promise<Player> {
 
   return {
     _id: insertedResult._id.toString(),
-    name: insertedResult.name,
-    rank: insertedResult.rank,
-    pt: insertedResult.pt,
+    name: insertedResult.name.toString(),
+    rank: insertedResult.rank.toString() as Rank,
+    pt: Number(insertedResult.pt),
   };
 }
 
@@ -39,8 +39,8 @@ export async function getPlayerById(playerId: string): Promise<Player | null> {
   const player = await PlayerSchema.findById(playerId)
   return player ? {
     _id: player._id.toString(),
-    name: player.name,
-    rank: player.rank,
-    pt: player.pt,
+    name: player.name.toString(),
+    rank: player.rank.toString() as Rank,
+    pt: Number(player.pt),
   } : null;
 }
