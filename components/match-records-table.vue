@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {MatchRecord} from "~/types/match-record";
 import { StartDirection } from "~/types/match-record";
+import type {TableColumnCtx} from "element-plus";
 
 const props = defineProps<{
   name: string
@@ -62,8 +63,8 @@ defineExpose({
   loadData
 });
 
-function mapStartDirection(direction: StartDirection): string {
-  switch (direction) {
+function formatStartDirection(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellValue: string): string {
+  switch (cellValue) {
     case StartDirection.East:
       return '东';
     case StartDirection.South:
@@ -77,18 +78,14 @@ function mapStartDirection(direction: StartDirection): string {
   }
 }
 
-function formatCreatedAt(dateString: string): string {
-  const date = new Date(dateString);
+function formatCreatedAt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellValue: string): string {
+  const date = new Date(cellValue);
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
   const day = date.getDate().toString().padStart(2, '0');
   const hours = date.getHours().toString().padStart(2, '0');
   const minutes = date.getMinutes().toString().padStart(2, '0');
   return `${year}-${month}-${day} ${hours}:${minutes}`;
-}
-
-function rowFormatCreatedAt(row: MatchRecord): string {
-  return formatCreatedAt(row.created_at);
 }
 
 const tableRowClassName = ({
@@ -112,50 +109,26 @@ const tableRowClassName = ({
 <template>
   <div>
     <el-table :data="data" empty-text="暂无数据" :row-class-name="tableRowClassName" :default-sort="{ prop: 'created_at', order: 'descending' } ">
-      <el-table-column prop="created_at" :formatter="rowFormatCreatedAt" label="录入时间" sortable />
+      <el-table-column prop="created_at" :formatter="formatCreatedAt" label="录入时间" sortable width="140" />
       <el-table-column label="1st">
         <el-table-column prop="record_1.player_name" label="玩家" />
         <el-table-column prop="record_1.points" label="分数" width="80" />
-        <el-table-column label="起家" width="55">
-          <template #default="scope">
-            <div>
-              {{mapStartDirection(scope.row.record_1.start_direction)}}
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column prop="record_1.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="2nd">
         <el-table-column prop="record_2.player_name" label="玩家" />
         <el-table-column prop="record_2.points" label="分数" width="80" />
-        <el-table-column label="起家" width="55">
-          <template #default="scope">
-            <div>
-              {{mapStartDirection(scope.row.record_2.start_direction)}}
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column prop="record_2.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="3rd">
         <el-table-column prop="record_3.player_name" label="玩家" />
         <el-table-column prop="record_3.points" label="分数" width="80" />
-        <el-table-column label="起家" width="55">
-          <template #default="scope">
-            <div>
-              {{mapStartDirection(scope.row.record_3.start_direction)}}
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column prop="record_3.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="4th">
         <el-table-column prop="record_4.player_name" label="玩家" />
         <el-table-column prop="record_4.points" label="分数" width="80" />
-        <el-table-column label="起家" width="55">
-          <template #default="scope">
-            <div>
-              {{mapStartDirection(scope.row.record_4.start_direction)}}
-            </div>
-          </template>
-        </el-table-column>
+        <el-table-column prop="record_4.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
     </el-table>
 
