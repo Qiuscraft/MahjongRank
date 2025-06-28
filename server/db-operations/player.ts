@@ -10,17 +10,23 @@ export async function searchPlayer(name: string): Promise<Player[]> {
   return players.map(player => ({
     _id: player._id.toString(),
     name: player.name,
+    rank: player.rank,
+    pt: player.pt,
   }));
 }
 
 export async function registerPlayer(name: string): Promise<Player> {
   const insertedResult = await PlayerSchema.insertOne({
     name: name,
+    rank: 'novice_1', // 默认初始段位
+    pt: 0, // 初始积分为0
   });
 
   return {
     _id: insertedResult._id.toString(),
     name: insertedResult.name,
+    rank: insertedResult.rank,
+    pt: insertedResult.pt,
   };
 }
 
@@ -34,5 +40,7 @@ export async function getPlayerById(playerId: string): Promise<Player | null> {
   return player ? {
     _id: player._id.toString(),
     name: player.name,
+    rank: player.rank,
+    pt: player.pt,
   } : null;
 }
