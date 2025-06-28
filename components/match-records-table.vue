@@ -87,11 +87,29 @@ function formatCreatedAt(dateString: string): string {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 
+const tableRowClassName = ({
+                             row,
+                             rowIndex,
+                           }: {
+  row: MatchRecord
+  rowIndex: number
+}) => {
+  if (row.record_1.player_name === props.name) {
+    return 'success-row'
+  } else if (row.record_2.player_name === props.name) {
+    return 'info-row'
+  } else if (row.record_3.player_name === props.name) {
+    return 'warning-row'
+  } else if (row.record_4.player_name === props.name) {
+    return 'danger-row'
+  }
+  return ''
+}
 </script>
 
 <template>
   <div>
-    <el-table :data="data" empty-text="暂无数据" stripe>
+    <el-table :data="data" empty-text="暂无数据" :row-class-name="tableRowClassName">
       <el-table-column label="录入时间">
         <template #default="scope">
           <div>
@@ -148,6 +166,17 @@ function formatCreatedAt(dateString: string): string {
   </div>
 </template>
 
-<style scoped>
-
+<style>
+.el-table .danger-row {
+  --el-table-tr-bg-color: var(--el-color-danger-light-9);
+}
+.el-table .warning-row {
+  --el-table-tr-bg-color: var(--el-color-warning-light-9);
+}
+.el-table .info-row {
+  --el-table-tr-bg-color: var(--el-color-info-light-9);
+}
+.el-table .success-row {
+  --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
 </style>
