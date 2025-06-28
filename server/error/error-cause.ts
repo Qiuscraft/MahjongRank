@@ -1,3 +1,3 @@
 export enum ErrorCause {
-  PlayerNotFound = 'PlayerNotFound',
+  PlayerNotFound = '玩家不存在！',
 }

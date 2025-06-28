@@ -16,7 +16,7 @@ async function loadData() {
       },
     })
   } catch (error: any) {
-    ElMessage.error(error.statusMessage || 'Unknown Error.');
+    ElMessage.error(`获取比赛记录失败：${error.statusMessage || '未知错误。'}`);
   }
 }
 

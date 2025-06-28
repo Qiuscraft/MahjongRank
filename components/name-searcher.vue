@@ -17,7 +17,7 @@ async function loadNames() {
 
     names.value = result.map(player => ({ value: player.name }))
   } catch (error: any) {
-    ElMessage.error(`Error fetching players: ${error.statusMessage || 'Unknown error'}`)
+    ElMessage.error(`获取玩家列表失败：${error.statusMessage || '未知错误。'}`)
     names.value = []
   }
   names.value.sort((a, b) => a.value.localeCompare(b.value))
