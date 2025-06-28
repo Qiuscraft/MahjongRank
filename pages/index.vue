@@ -28,6 +28,12 @@ async function handleNameSelect(item: any) {
     }
   }
 }
+
+onMounted(async () => {
+  if (route.query.name) {
+    await handleNameSelect(route.query.name);
+  }
+})
 </script>
 
 <style>
