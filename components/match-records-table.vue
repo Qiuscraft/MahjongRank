@@ -91,7 +91,7 @@ function formatCreatedAt(dateString: string): string {
 
 <template>
   <div>
-    <el-table :data="data" empty-text="暂无数据">
+    <el-table :data="data" empty-text="暂无数据" stripe>
       <el-table-column label="录入时间">
         <template #default="scope">
           <div>
