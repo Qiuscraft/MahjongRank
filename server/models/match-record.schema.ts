@@ -1,4 +1,5 @@
 import { defineMongooseModel } from '#nuxt/mongoose'
+import {Rank} from "~/types/player";
 
 const SubMatchRecordSchema = {
   player_id: {
@@ -17,7 +18,20 @@ const SubMatchRecordSchema = {
     type: 'string',
     required: true,
     enum: ['east', 'south', 'west', 'north']
-  }
+  },
+  rank: {
+    type: 'string',
+    required: true,
+    enum: Object.values(Rank),
+  },
+  pt: {
+    type: 'number',
+    required: true,
+    validate: {
+      validator: Number.isInteger,
+      message: 'PT must be an integer',
+    },
+  },
 }
 
 export const MatchRecordSchema = defineMongooseModel({

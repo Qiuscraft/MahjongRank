@@ -1,8 +1,8 @@
-import {MatchRecord, MatchRecordUseId, StartDirection} from "~/types/match-record";
-import {matchRecordPlayerIdToPlayerName, subRecordPlayerNameToPlayerId} from "~/server/db-operations/match-record";
+import {MatchRecordUseId, MatchRecordInput, SubMatchRecordInput, StartDirection} from "~/types/match-record";
+import {batchSubMatchRecordInputToUseId, matchRecordUseIdToRecord, insertMatchRecord} from "~/server/db-operations/match-record";
 import {createMyError, isMyError} from "~/server/error/error-utils";
 
-function isSubMatchRecord(data: any): boolean {
+function isSubMatchRecordInput(data: any): data is SubMatchRecordInput {
   if (!data || typeof data !== 'object') {
     return false;
   }
@@ -15,7 +15,7 @@ function isSubMatchRecord(data: any): boolean {
   );
 }
 
-function isMatchRecord(data: any): boolean {
+function isMatchRecordInput(data: any): data is MatchRecordInput {
   if (!data || typeof data !== 'object') {
     return false;
   }
@@ -24,19 +24,18 @@ function isMatchRecord(data: any): boolean {
 
   // 检查是否包含所有必需字段
   for (const field of requiredFields) {
-    if (!data[field] || !isSubMatchRecord(data[field])) {
-      return false;
-    }
-    if (!data['created_at'] || typeof data['created_at'] !== 'string') {
+    if (!data[field] || !isSubMatchRecordInput(data[field])) {
       return false;
     }
   }
 
-  return true;
+  return !(!data['created_at'] || typeof data['created_at'] !== 'string');
+
+
 }
 
 // 验证函数：检查4个start_direction是否包含East、North、South、West各一个
-function validateStartDirections(data: MatchRecord): boolean {
+function validateStartDirections(data: MatchRecordInput): boolean {
   const directions = [
     data.record_1.start_direction,
     data.record_2.start_direction,
@@ -52,7 +51,7 @@ function validateStartDirections(data: MatchRecord): boolean {
 }
 
 // 验证函数：检查4个points总和是否为100000
-function validatePointsTotal(data: MatchRecord): boolean {
+function validatePointsTotal(data: MatchRecordInput): boolean {
   const totalPoints = data.record_1.points + data.record_2.points + data.record_3.points + data.record_4.points;
   return totalPoints === 100000;
 }
@@ -60,7 +59,7 @@ function validatePointsTotal(data: MatchRecord): boolean {
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
-  if (!isMatchRecord(body)) {
+  if (!isMatchRecordInput(body)) {
     throw createError({
       statusCode: 400,
       statusMessage: '参数不正确。',
@@ -83,25 +82,28 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const {record_1, record_2, record_3, record_4} = body;
+  const {record_1, record_2, record_3, record_4, created_at} = body;
 
   try {
-    const [record_1_edited, record_2_edited, record_3_edited, record_4_edited] = await Promise.all([
-      subRecordPlayerNameToPlayerId(record_1),
-      subRecordPlayerNameToPlayerId(record_2),
-      subRecordPlayerNameToPlayerId(record_3),
-      subRecordPlayerNameToPlayerId(record_4),
+    // 批量处理所有玩家记录，正确计算pt
+    const allRecordsUseId = await batchSubMatchRecordInputToUseId([
+      record_1, record_2, record_3, record_4
     ]);
 
-    const inserted = await MatchRecordSchema.insertOne({
-      record_1: record_1_edited,
-      record_2: record_2_edited,
-      record_3: record_3_edited,
-      record_4: record_4_edited,
-      created_at: new Date(),
-    })
+    // 构建用于数据库插入的MatchRecordUseId
+    const matchRecordUseId: MatchRecordUseId = {
+      record_1: allRecordsUseId[0],
+      record_2: allRecordsUseId[1],
+      record_3: allRecordsUseId[2],
+      record_4: allRecordsUseId[3],
+      created_at: created_at,
+    };
 
-    return await matchRecordPlayerIdToPlayerName(inserted as unknown as MatchRecordUseId);
+    // 插入到数据库
+    const insertedRecord = await insertMatchRecord(matchRecordUseId);
+
+    // 转换为MatchRecord格式返回给前端
+    return await matchRecordUseIdToRecord(insertedRecord);
 
   } catch (error: any) {
     if (isMyError(error)) {
@@ -115,5 +117,4 @@ export default defineEventHandler(async (event) => {
       statusMessage: '未知错误。',
     });
   }
-
 })
