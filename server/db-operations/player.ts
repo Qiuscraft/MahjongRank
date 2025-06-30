@@ -1,5 +1,7 @@
-import {Player, Rank} from "~/types/player";
+import {Player} from "~/types/player";
 import {PlayerSchema} from "~/server/models/player.schema";
+
+import {Rank} from "~/server/utils/player-rank";
 
 export async function searchPlayer(name: string): Promise<Player[]> {
   const searchQuery = name

@@ -1,5 +1,7 @@
 import { defineMongooseModel } from '#nuxt/mongoose'
-import {Rank} from "~/types/player";
+
+
+import {Rank} from "~/server/utils/player-rank";
 
 const SubMatchRecordSchema = {
   player_id: {

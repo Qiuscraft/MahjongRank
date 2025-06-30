@@ -1,4 +1,4 @@
-import {Rank} from "~/types/player";
+import {Rank} from "~/server/utils/player-rank";
 
 // 比赛等级枚举
 export enum MatchLevel {

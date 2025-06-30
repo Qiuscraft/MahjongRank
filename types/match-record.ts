@@ -1,4 +1,4 @@
-import type {Rank} from "~/types/player";
+import {Rank} from "~/server/utils/player-rank";
 
 // TODO: 定义东风场南风场
 export interface MatchRecord {

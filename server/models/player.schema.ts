@@ -1,5 +1,7 @@
 import { defineMongooseModel } from '#nuxt/mongoose'
-import { Rank } from '~/types/player'
+
+
+import {Rank} from "~/server/utils/player-rank";
 
 export const PlayerSchema = defineMongooseModel({
   name: 'Player',
