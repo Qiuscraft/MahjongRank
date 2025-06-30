@@ -5,7 +5,7 @@ import {
   SubMatchRecordInput,
   type SubMatchRecordUseId
 } from "~/types/match-record";
-import {getPlayerById, getPlayerIdByName} from "~/server/db-operations/player";
+import {getPlayerById, getPlayerIdByName, updatePlayerPt} from "~/server/db-operations/player";
 import {MatchRecordSchema} from "~/server/models/match-record.schema";
 import {ErrorCause} from "~/server/error/error-cause";
 import {calculateAllPlayersPt, MatchType} from "~/server/utils/pt-calculator";
@@ -107,7 +107,7 @@ export async function matchRecordUseIdToRecord(useIdMatchRecord: MatchRecordUseI
 /**
  * 根据玩家名称获取比赛记录
  * @param name - 玩家名称
- * @returns 返回该玩家的所有比赛记录
+ * @returns 返回该玩家的所有比赛记���
  * @throws {Error} 当找不到指定名称的玩家时抛出异常
  */
 export async function getMatchRecordsByPlayerName(name: string): Promise<MatchRecord[]> {
@@ -200,4 +200,23 @@ export async function insertMatchRecord(matchRecordUseId: MatchRecordUseId): Pro
     record_4: inserted.record_4 as unknown as SubMatchRecordUseId,
     created_at: inserted.created_at,
   };
+}
+
+/**
+ * 更新比赛记录中所有玩家的分数
+ * @param matchRecordUseId - 包含ID的比赛记录
+ */
+export async function updateAllPlayersPoints(matchRecordUseId: MatchRecordUseId): Promise<void> {
+  // 提取所有玩家的分数更新信息
+  const updates = [
+    { playerId: matchRecordUseId.record_1.player_id, ptDelta: matchRecordUseId.record_1.pt },
+    { playerId: matchRecordUseId.record_2.player_id, ptDelta: matchRecordUseId.record_2.pt },
+    { playerId: matchRecordUseId.record_3.player_id, ptDelta: matchRecordUseId.record_3.pt },
+    { playerId: matchRecordUseId.record_4.player_id, ptDelta: matchRecordUseId.record_4.pt }
+  ];
+
+  // 并行更新所有玩家的分数
+  await Promise.all(
+    updates.map(({ playerId, ptDelta }) => updatePlayerPt(playerId, ptDelta))
+  );
 }

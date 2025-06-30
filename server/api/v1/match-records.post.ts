@@ -1,5 +1,10 @@
 import {MatchRecordUseId, MatchRecordInput, SubMatchRecordInput, StartDirection} from "~/types/match-record";
-import {batchSubMatchRecordInputToUseId, matchRecordUseIdToRecord, insertMatchRecord} from "~/server/db-operations/match-record";
+import {
+  batchSubMatchRecordInputToUseId,
+  matchRecordUseIdToRecord,
+  insertMatchRecord,
+  updateAllPlayersPoints
+} from "~/server/db-operations/match-record";
 import {createMyError, isMyError} from "~/server/error/error-utils";
 
 function isSubMatchRecordInput(data: any): data is SubMatchRecordInput {
@@ -98,6 +103,8 @@ export default defineEventHandler(async (event) => {
       record_4: allRecordsUseId[3],
       created_at: created_at,
     };
+
+    await updateAllPlayersPoints(matchRecordUseId);
 
     // 插入到数据库
     const insertedRecord = await insertMatchRecord(matchRecordUseId);
