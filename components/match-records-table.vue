@@ -2,6 +2,7 @@
 import type {MatchRecord} from "~/types/match-record";
 import { StartDirection } from "~/types/match-record";
 import type {TableColumnCtx} from "element-plus";
+import {getRankChineseName} from "~/server/utils/player-rank";
 
 const props = defineProps<{
   name: string
@@ -49,6 +50,10 @@ const tableRowClassName = ({
   }
   return ''
 }
+
+function formatRank(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellValue: Rank): string {
+  return getRankChineseName(cellValue);
+}
 </script>
 
 <template>
@@ -57,21 +62,25 @@ const tableRowClassName = ({
       <el-table-column prop="created_at" :formatter="formatCreatedAt" label="录入时间" sortable width="140" />
       <el-table-column label="1st">
         <el-table-column prop="record_1.player_name" label="玩家" />
+        <el-table-column prop="record_1.rank" label="段位" :formatter="formatRank" />
         <el-table-column prop="record_1.points" label="分数" width="80" />
         <el-table-column prop="record_1.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="2nd">
         <el-table-column prop="record_2.player_name" label="玩家" />
+        <el-table-column prop="record_2.rank" label="段位" :formatter="formatRank" />
         <el-table-column prop="record_2.points" label="分数" width="80" />
         <el-table-column prop="record_2.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="3rd">
         <el-table-column prop="record_3.player_name" label="玩家" />
+        <el-table-column prop="record_3.rank" label="段位" :formatter="formatRank" />
         <el-table-column prop="record_3.points" label="分数" width="80" />
         <el-table-column prop="record_3.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="4th">
         <el-table-column prop="record_4.player_name" label="玩家" />
+        <el-table-column prop="record_4.rank" label="段位" :formatter="formatRank" />
         <el-table-column prop="record_4.points" label="分数" width="80" />
         <el-table-column prop="record_4.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
