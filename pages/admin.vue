@@ -6,7 +6,7 @@
         <el-input v-model="playerName" />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="addPlayer">添加</el-button>
+        <el-button type="primary" :loading="isLoading" @click="addPlayer">添加</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 const playerName = ref('')
+const isLoading = ref(false)
 
 const addPlayer = async () => {
   if (!playerName.value) {
@@ -21,6 +22,7 @@ const addPlayer = async () => {
     return
   }
 
+  isLoading.value = true
   try {
     await $fetch('/api/v1/players', {
       method: 'POST',
@@ -30,7 +32,8 @@ const addPlayer = async () => {
     playerName.value = ''
   } catch (error: any) {
     ElMessage.error(error.data.message || '添加玩家失败。')
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
-
