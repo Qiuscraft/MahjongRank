@@ -82,6 +82,11 @@
 <script setup lang="ts">
 import { StartDirection, MatchType } from '~/types/match-record'
 
+// 设置页面标题
+useHead({
+  title: '管理 - 麻将比赛记录'
+})
+
 // --- Auth ---
 const authCookie = useCookie('mahjong-rank-auth')
 const isAuthenticated = ref(!!authCookie.value)

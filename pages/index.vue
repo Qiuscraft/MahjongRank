@@ -65,6 +65,11 @@
 import {type MatchRecord, StartDirection} from "~/types/match-record";
 import type {Player} from "~/types/player";
 
+// 设置页面标题
+useHead({
+  title: '查询 - 麻将比赛记录'
+})
+
 const route = useRoute();
 const router = useRouter();
 
