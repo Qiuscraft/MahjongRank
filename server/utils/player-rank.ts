@@ -162,3 +162,33 @@ export function getPreviousRank(currentRank: Rank): Rank {
   const previousIndex = currentIndex - 1
   return previousIndex >= 0 ? RANK_ORDER[previousIndex] : currentRank
 }
+
+/**
+ * 段位中文名称映射表
+ */
+export const RANK_CHINESE_NAMES: Record<Rank, string> = {
+  [Rank.Novice1]: "初心1星",
+  [Rank.Novice2]: "初心2星",
+  [Rank.Novice3]: "初心3星",
+  [Rank.Practitioner1]: "雀士1星",
+  [Rank.Practitioner2]: "雀士2星",
+  [Rank.Practitioner3]: "雀士3星",
+  [Rank.Expert1]: "雀杰1星",
+  [Rank.Expert2]: "雀杰2星",
+  [Rank.Expert3]: "雀杰3星",
+  [Rank.Elite1]: "雀豪1星",
+  [Rank.Elite2]: "雀豪2星",
+  [Rank.Elite3]: "雀豪3星",
+  [Rank.Sage1]: "雀圣1星",
+  [Rank.Sage2]: "雀圣2星",
+  [Rank.Sage3]: "雀圣3星"
+}
+
+/**
+ * 获取段位的中文名称
+ * @param rank 段位枚举值
+ * @returns 段位对应的中文字符串
+ */
+export function getRankChineseName(rank: Rank): string {
+  return RANK_CHINESE_NAMES[rank]
+}
