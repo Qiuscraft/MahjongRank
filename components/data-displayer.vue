@@ -140,49 +140,39 @@ const chartOptions = {
 </script>
 
 <template>
-  <div class="space-y-6">
-    <!-- 基本信息卡片 -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-4 text-white">
-        <div class="text-sm opacity-90">段位</div>
-        <div class="text-lg font-bold">{{getRankChineseName(player.rank)}}</div>
+  <div class="flex flex-col md:flex-row gap-6">
+    <!-- 左侧数据区域 -->
+    <div class="w-full md:w-1/3 space-y-4">
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="text-sm text-gray-600">段位</div>
+        <div class="text-lg font-bold text-gray-800">{{getRankChineseName(player.rank)}}</div>
       </div>
-      <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-4 text-white">
-        <div class="text-sm opacity-90">PT</div>
-        <div class="text-lg font-bold">{{player.pt}}/{{getPromotionPt(player.rank)}}</div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="text-sm text-gray-600">PT</div>
+        <div class="text-lg font-bold text-gray-800">{{player.pt}}/{{getPromotionPt(player.rank)}}</div>
       </div>
-      <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-4 text-white">
-        <div class="text-sm opacity-90">总局数</div>
-        <div class="text-lg font-bold">{{data.length}}</div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="text-sm text-gray-600">总局数</div>
+        <div class="text-lg font-bold text-gray-800">{{data.length}}</div>
       </div>
-      <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg p-4 text-white">
-        <div class="text-sm opacity-90">最高点数</div>
-        <div class="text-lg font-bold">{{maxPoints}}</div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="text-sm text-gray-600">最高点数</div>
+        <div class="text-lg font-bold text-gray-800">{{maxPoints}}</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="text-sm text-gray-600">平均点数</div>
+        <div class="text-lg font-bold text-gray-800">{{averagePoints}}</div>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <div class="text-sm text-gray-600">平均顺位</div>
+        <div class="text-lg font-bold text-gray-800">{{averageRank}}</div>
       </div>
     </div>
 
-    <!-- 统计数据卡片 -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-gray-50 rounded-lg p-6">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">平均数据</h3>
-        <div class="space-y-3">
-          <div class="flex justify-between items-center">
-            <span class="text-gray-600">平均点数</span>
-            <span class="font-semibold text-gray-800">{{averagePoints}}</span>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-gray-600">平均顺位</span>
-            <span class="font-semibold text-gray-800">{{averageRank}}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 图表区域 -->
-      <div class="bg-gray-50 rounded-lg p-6" v-if="data.length > 0">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">顺位分布</h3>
-        <div class="chart-container">
-          <Pie :data="rankDistribution" :options="chartOptions" />
-        </div>
+    <!-- 右侧图表区域 -->
+    <div class="w-full md:w-2/3 bg-gray-50 rounded-lg p-6" v-if="data.length > 0">
+      <div class="chart-container mx-auto">
+        <Pie :data="rankDistribution" :options="chartOptions" />
       </div>
     </div>
   </div>
@@ -190,8 +180,11 @@ const chartOptions = {
 
 <style scoped>
 .chart-container {
-  width: 100%;
-  max-width: 400px;
-  margin: 20px auto;
+  position: relative;
+  margin: auto;
+  height: 60vh;
+  width: 80vw;
+  max-width: 500px;
+  max-height: 500px;
 }
 </style>
