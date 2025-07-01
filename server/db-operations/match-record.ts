@@ -1,6 +1,6 @@
 import {
   MatchRecord,
-  MatchRecordUseId,
+  MatchRecordUseId, MatchType,
   SubMatchRecord,
   SubMatchRecordInput,
   type SubMatchRecordUseId
