@@ -10,7 +10,7 @@ import {
   CategoryScale
 } from 'chart.js';
 import type {Player} from "~/types/player";
-import {getRankChineseName} from "~/utils/player-rank";
+import {getPromotionPt, getRankChineseName} from "~/utils/player-rank";
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
@@ -142,6 +142,7 @@ const chartOptions = {
 <template>
   <div>
     <div>段位：{{getRankChineseName(player.rank)}}</div>
+    <div>pt：{{player.pt}}/{{getPromotionPt(player.rank)}}</div>
     <div>总局数：{{data.length}}</div>
     <div>最高点数：{{maxPoints}}</div>
     <div>平均点数：{{averagePoints}}</div>
