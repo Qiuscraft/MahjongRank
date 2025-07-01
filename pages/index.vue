@@ -1,13 +1,14 @@
 <template>
   <div>
     <name-searcher v-model="inputtingName" @select="handleNameSelect" />
-    <data-displayer v-if="selectingName" :data="data" :name="selectingName" />
+    <data-displayer v-if="selectingName && selectingPlayer" :data="data" :player="selectingPlayer" />
     <match-records-table v-if="selectingName" :data="data" :name="selectingName" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import {type MatchRecord, StartDirection} from "~/types/match-record";
+import type {Player} from "~/types/player";
 
 const route = useRoute();
 const router = useRouter();
@@ -15,6 +16,7 @@ const router = useRouter();
 // 从路由参数初始化name值
 const inputtingName = ref<string>((route.query.name as string) || '');
 const selectingName = ref<string>((route.query.name as string) || '');
+const selectingPlayer = ref<Player | undefined>();
 
 // 处理name选择事件，更新路由参数
 async function handleNameSelect(item: any) {
@@ -77,6 +79,12 @@ async function loadData() {
         name: selectingName.value,
       },
     })
+    selectingPlayer.value = (await $fetch('/api/v1/players', {
+      method: 'GET',
+      params: {
+        exact_name: selectingName.value,
+      },
+    }))[0];
   } catch (error: any) {
     ElMessage.error(`获取比赛记录失败：${error.data.message || '未知错误。'}`);
   }

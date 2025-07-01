@@ -49,6 +49,16 @@ export async function getPlayerById(playerId: string): Promise<Player | null> {
   } : null;
 }
 
+export async function getPlayerByName(playerName: string): Promise<Player | null> {
+  const player = await PlayerSchema.findOne({name: playerName})
+  return player ? {
+    _id: player._id.toString(),
+    name: player.name.toString(),
+    rank: player.rank.toString() as Rank,
+    pt: Number(player.pt),
+  } : null;
+}
+
 /**
  * 更新玩家分数并处理段位变化
  * @param playerId - 玩家ID

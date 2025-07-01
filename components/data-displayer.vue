@@ -9,11 +9,13 @@ import {
   ArcElement,
   CategoryScale
 } from 'chart.js';
+import type {Player} from "~/types/player";
+import {getRankChineseName} from "~/utils/player-rank";
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
 const props = defineProps<{
-  name: string
+  player: Player
   data: MatchRecord[]
 }>();
 
@@ -21,7 +23,7 @@ const maxPoints = computed<number>(() => {
   const pointsList = props.data.flatMap(matchRecord => {
     const subRecords = [matchRecord.record_1, matchRecord.record_2, matchRecord.record_3, matchRecord.record_4];
     return subRecords
-        .filter(subRecord => subRecord.player_name === props.name)
+        .filter(subRecord => subRecord.player_name === props.player.name)
         .map(subRecord => subRecord.points);
   });
 
@@ -36,7 +38,7 @@ const averagePoints = computed<number>(() => {
   const pointsList = props.data.flatMap(matchRecord => {
     const subRecords = [matchRecord.record_1, matchRecord.record_2, matchRecord.record_3, matchRecord.record_4];
     return subRecords
-        .filter(subRecord => subRecord.player_name === props.name)
+        .filter(subRecord => subRecord.player_name === props.player.name)
         .map(subRecord => subRecord.points);
   });
 
@@ -50,16 +52,16 @@ const averagePoints = computed<number>(() => {
 
 const averageRank = computed<number>(() => {
   const rankList = props.data.map(matchRecord => {
-    if (matchRecord.record_1.player_name === props.name) {
+    if (matchRecord.record_1.player_name === props.player.name) {
       return 1;
     }
-    if (matchRecord.record_2.player_name === props.name) {
+    if (matchRecord.record_2.player_name === props.player.name) {
       return 2;
     }
-    if (matchRecord.record_3.player_name === props.name) {
+    if (matchRecord.record_3.player_name === props.player.name) {
       return 3;
     }
-    if (matchRecord.record_4.player_name === props.name) {
+    if (matchRecord.record_4.player_name === props.player.name) {
       return 4;
     }
     return null;
@@ -77,16 +79,16 @@ const averageRank = computed<number>(() => {
 
 const rankDistribution = computed(() => {
   const rankList = props.data.map(matchRecord => {
-    if (matchRecord.record_1.player_name === props.name) {
+    if (matchRecord.record_1.player_name === props.player.name) {
       return 1;
     }
-    if (matchRecord.record_2.player_name === props.name) {
+    if (matchRecord.record_2.player_name === props.player.name) {
       return 2;
     }
-    if (matchRecord.record_3.player_name === props.name) {
+    if (matchRecord.record_3.player_name === props.player.name) {
       return 3;
     }
-    if (matchRecord.record_4.player_name === props.name) {
+    if (matchRecord.record_4.player_name === props.player.name) {
       return 4;
     }
     return null;
@@ -139,10 +141,12 @@ const chartOptions = {
 
 <template>
   <div>
+    <div>段位：{{getRankChineseName(player.rank)}}</div>
     <div>总局数：{{data.length}}</div>
     <div>最高点数：{{maxPoints}}</div>
     <div>平均点数：{{averagePoints}}</div>
     <div>平均顺位：{{averageRank}}</div>
+    
 
     <div class="chart-container" v-if="data.length > 0">
       <Pie :data="rankDistribution" :options="chartOptions" />
