@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       path: '/',
     })
 
-    return { status: 'ok' }
+    return {  }
   } else {
     throw createError({
       statusCode: 401,
