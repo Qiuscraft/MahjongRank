@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type {Player} from '~/types/player'
+import {Search} from '@element-plus/icons-vue'
 
 const name = defineModel<string>({ default: '' })
 
@@ -47,12 +48,24 @@ onMounted(async () => {
 </script>
 
 <template>
-  <el-autocomplete
-    v-model="name"
-    :fetch-suggestions="search"
-    placeholder="请输入你的用户名..."
-    @select="handleSelect"
-  />
+  <div class="relative w-full">
+    <el-autocomplete
+      v-model="name"
+      :fetch-suggestions="search"
+      placeholder="请输入你的用户名..."
+      @select="handleSelect"
+      class="w-full"
+      size="large"
+      clearable
+      :popper-class="'search-dropdown'"
+    >
+      <template #prefix>
+        <el-icon class="text-gray-400">
+          <Search />
+        </el-icon>
+      </template>
+    </el-autocomplete>
+  </div>
 </template>
 
 <style scoped>

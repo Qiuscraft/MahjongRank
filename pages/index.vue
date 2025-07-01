@@ -1,8 +1,50 @@
 <template>
-  <div>
-    <name-searcher v-model="inputtingName" @select="handleNameSelect" />
-    <data-displayer v-if="selectingName && selectingPlayer" :data="data" :player="selectingPlayer" />
-    <match-records-table v-if="selectingName" :data="data" :name="selectingName" />
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+      <!-- 页面标题 -->
+      <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">麻将排位记录</h1>
+        <p class="text-gray-600">查看玩家的比赛记录和统计数据</p>
+      </div>
+
+      <!-- 搜索区域 -->
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div class="max-w-md mx-auto">
+          <label class="block text-sm font-medium text-gray-700 mb-2">搜索玩家</label>
+          <name-searcher v-model="inputtingName" @select="handleNameSelect" />
+        </div>
+      </div>
+
+      <!-- 数据展示区域 -->
+      <div v-if="selectingName && selectingPlayer" class="space-y-8">
+        <!-- 统计数据卡片 -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
+            <h2 class="text-xl font-semibold text-white">{{ selectingPlayer.name }} 的统计数据</h2>
+          </div>
+          <div class="p-6">
+            <data-displayer :data="data" :player="selectingPlayer" />
+          </div>
+        </div>
+
+        <!-- 比赛记录表格 -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div class="bg-gradient-to-r from-green-500 to-teal-600 px-6 py-4">
+            <h2 class="text-xl font-semibold text-white">比赛记录</h2>
+          </div>
+          <div class="overflow-x-auto">
+            <match-records-table :data="data" :name="selectingName" />
+          </div>
+        </div>
+      </div>
+
+      <!-- 空状态提示 -->
+      <div v-else-if="!selectingName" class="text-center py-16">
+        <div class="text-gray-400 text-6xl mb-4">🎯</div>
+        <h3 class="text-xl font-medium text-gray-600 mb-2">开始搜索</h3>
+        <p class="text-gray-500">请在上方搜索框中输入玩家姓名</p>
+      </div>
+    </div>
   </div>
 </template>
 

@@ -67,40 +67,63 @@ function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellVal
 </script>
 
 <template>
-  <div>
-    <el-table :data="data" empty-text="暂无数据" :row-class-name="tableRowClassName" :default-sort="{ prop: 'created_at', order: 'descending' } ">
-      <el-table-column prop="created_at" :formatter="formatCreatedAt" label="录入时间" width="135" sortable />
-      <el-table-column label="比赛等级" width="85" :formatter="formatMatchLevel" />
-      <el-table-column label="1st">
-        <el-table-column prop="record_1.player_name" label="玩家" />
-        <el-table-column prop="record_1.rank" label="段位" width="75" :formatter="formatRank" />
-        <el-table-column prop="record_1.pt" label="pt" width="55" :formatter="formatPt" />
-        <el-table-column prop="record_1.points" label="点数" width="80" />
-        <el-table-column prop="record_1.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
-      </el-table-column>
-      <el-table-column label="2nd">
-        <el-table-column prop="record_2.player_name" label="玩家" />
-        <el-table-column prop="record_2.rank" label="段位" width="75" :formatter="formatRank" />
-        <el-table-column prop="record_2.pt" label="pt" width="55" :formatter="formatPt" />
-        <el-table-column prop="record_2.points" label="点数" width="80" />
-        <el-table-column prop="record_2.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
-      </el-table-column>
-      <el-table-column label="3rd">
-        <el-table-column prop="record_3.player_name" label="玩家" />
-        <el-table-column prop="record_3.rank" label="段位" width="75" :formatter="formatRank" />
-        <el-table-column prop="record_3.pt" label="pt" width="55" :formatter="formatPt" />
-        <el-table-column prop="record_3.points" label="点数" width="80" />
-        <el-table-column prop="record_3.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
-      </el-table-column>
-      <el-table-column label="4th">
-        <el-table-column prop="record_4.player_name" label="玩家" />
-        <el-table-column prop="record_4.rank" label="段位" width="75" :formatter="formatRank" />
-        <el-table-column prop="record_4.pt" label="pt" width="55" :formatter="formatPt" />
-        <el-table-column prop="record_4.points" label="点数" width="80" />
-        <el-table-column prop="record_4.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
-      </el-table-column>
-    </el-table>
+  <div class="p-4">
+    <div class="overflow-x-auto">
+      <el-table
+        :data="data"
+        empty-text="暂无数据"
+        :row-class-name="tableRowClassName"
+        :default-sort="{ prop: 'created_at', order: 'descending' }"
+        class="w-full"
+        stripe
+        header-row-class-name="bg-gray-50"
+      >
+        <el-table-column
+          prop="created_at"
+          :formatter="formatCreatedAt"
+          label="录入时间"
+          sortable
+          class-name="text-sm"
+        />
+        <el-table-column
+          label="比赛等级"
+          :formatter="formatMatchLevel"
+          class-name="text-sm font-medium"
+        />
 
+        <!-- 第1位 -->
+        <el-table-column label="🥇 第1位" header-align="center">
+          <el-table-column prop="record_1.player_name" label="玩家" />
+          <el-table-column prop="record_1.rank" label="段位" :formatter="formatRank" />
+          <el-table-column prop="record_1.pt" label="PT" :formatter="formatPt" class-name="font-medium text-green-600"/>
+          <el-table-column prop="record_1.points" label="点数" class-name="font-medium"/>
+        </el-table-column>
+
+        <!-- 第2位 -->
+        <el-table-column label="🥈 第2位" header-align="center">
+          <el-table-column prop="record_2.player_name" label="玩家" />
+          <el-table-column prop="record_2.rank" label="段位" :formatter="formatRank" />
+          <el-table-column prop="record_2.pt" label="PT" :formatter="formatPt" class-name="font-medium text-blue-600"/>
+          <el-table-column prop="record_2.points" label="点数" class-name="font-medium"/>
+        </el-table-column>
+
+        <!-- 第3位 -->
+        <el-table-column label="🥉 第3位" header-align="center">
+          <el-table-column prop="record_3.player_name" label="玩家" />
+          <el-table-column prop="record_3.rank" label="段位" :formatter="formatRank" />
+          <el-table-column prop="record_3.pt" label="PT" :formatter="formatPt" class-name="font-medium text-orange-600"/>
+          <el-table-column prop="record_3.points" label="点数" class-name="font-medium"/>
+        </el-table-column>
+
+        <!-- 第4位 -->
+        <el-table-column label="4️⃣ 第4位" header-align="center">
+          <el-table-column prop="record_4.player_name" label="玩家" />
+          <el-table-column prop="record_4.rank" label="段位" :formatter="formatRank" />
+          <el-table-column prop="record_4.pt" label="PT" :formatter="formatPt" class-name="font-medium text-red-600"/>
+          <el-table-column prop="record_4.points" label="点数" class-name="font-medium"/>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 
