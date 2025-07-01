@@ -27,34 +27,38 @@
         </div>
       </template>
       <el-form :model="matchRecordForm" label-width="80px">
-        <el-row :gutter="20">
-          <el-col :span="12" v-for="(record, index) in matchRecordForm.records" :key="index">
-            <el-card class="mb-4">
-              <template #header>
-                <span>玩家 {{ index + 1 }}</span>
-              </template>
-              <el-form-item label="名称">
-                <el-input v-model="record.player_name" />
-              </el-form-item>
-              <el-form-item label="点数">
-                <el-input-number v-model="record.points" :step="100" />
-              </el-form-item>
-              <el-form-item label="起家">
-                <el-select v-model="record.start_direction" placeholder="请选择">
-                  <el-option v-for="item in startDirections" :key="item.value" :label="item.label" :value="item.value" />
-                </el-select>
-              </el-form-item>
-            </el-card>
+        <el-row :gutter="20" class="items-center">
+          <el-col :span="20">
+            <el-row :gutter="20">
+              <el-col :span="6" v-for="(record, index) in matchRecordForm.records" :key="index">
+                <el-card class="mb-4">
+                  <template #header>
+                    <span>玩家 {{ index + 1 }}</span>
+                  </template>
+                  <el-form-item label="名称">
+                    <el-input v-model="record.player_name" />
+                  </el-form-item>
+                  <el-form-item label="点数">
+                    <el-input-number v-model="record.points" :step="100" />
+                  </el-form-item>
+                  <el-form-item label="起家">
+                    <el-select v-model="record.start_direction" placeholder="请选择">
+                      <el-option v-for="item in startDirections" :key="item.value" :label="item.label" :value="item.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-card>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="类型" label-position="top">
+              <el-select v-model="matchRecordForm.match_type" placeholder="请选择" class="w-full">
+                <el-option v-for="item in matchTypes" :key="item.value" :label="item.label" :value="item.value" />
+              </el-select>
+            </el-form-item>
+            <el-button type="primary" :loading="isAddMatchLoading" @click="addMatchRecord" class="w-full">添加记录</el-button>
           </el-col>
         </el-row>
-        <el-form-item label="类型">
-          <el-select v-model="matchRecordForm.match_type" placeholder="请选择">
-            <el-option v-for="item in matchTypes" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :loading="isAddMatchLoading" @click="addMatchRecord">添加记录</el-button>
-        </el-form-item>
       </el-form>
     </el-card>
   </div>
