@@ -2,7 +2,7 @@ import {Player} from "~/types/player";
 import {PlayerSchema} from "~/server/models/player.schema";
 
 import {Rank, getNextRank, getPreviousRank, getRankConfig, RANK_ORDER} from "~/utils/player-rank";
-import {createMyError} from "~/server/error/error-utils";
+import {createMyAPIError} from "~/server/error/error-utils";
 import {ErrorCause} from "~/server/error/error-cause";
 
 export async function searchPlayer(name: string): Promise<Player[]> {
@@ -69,7 +69,7 @@ export async function updatePlayerPt(playerId: string, ptDelta: number): Promise
   // 获取当前玩家信息
   const player = await PlayerSchema.findById(playerId);
   if (!player) {
-    throw createMyError(ErrorCause.PlayerNotFound)
+    throw createMyAPIError(ErrorCause.PlayerNotFound)
   }
 
   let currentRank = player.rank as unknown as Rank;

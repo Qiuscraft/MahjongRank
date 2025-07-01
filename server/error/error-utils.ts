@@ -6,7 +6,7 @@ export function isMyError(error: any): boolean {
   } else return false;
 }
 
-export function createMyError(error: any) {
+export function createMyAPIError(error: any) {
   switch (error.cause) {
     case ErrorCause.PlayerNotFound:
       return createError({
@@ -19,4 +19,8 @@ export function createMyError(error: any) {
         statusMessage: error.cause,
       });
   }
+}
+
+export function createMyBackendError(cause: ErrorCause) {
+  return createError({cause: cause});
 }

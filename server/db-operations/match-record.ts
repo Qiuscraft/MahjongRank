@@ -9,6 +9,7 @@ import {getPlayerById, getPlayerIdByName, updatePlayerPt} from "~/server/db-oper
 import {MatchRecordSchema} from "~/server/models/match-record.schema";
 import {ErrorCause} from "~/server/error/error-cause";
 import {calculateAllPlayersPt} from "~/utils/pt-calculator";
+import {createMyBackendError} from "~/server/error/error-utils";
 
 /**
  * 批量将SubMatchRecordInput转换为SubMatchRecordUseId
@@ -26,12 +27,12 @@ export async function batchSubMatchRecordInputToUseId(
   const playerDataPromises = inputs.map(async (input) => {
     const playerId = await getPlayerIdByName(input.player_name);
     if (!playerId) {
-      throw createError({cause: ErrorCause.PlayerNotFound});
+      createMyBackendError(ErrorCause.PlayerNotFound);
     }
 
     const player = await getPlayerById(playerId);
     if (!player) {
-      throw createError({cause: ErrorCause.PlayerNotFound});
+      createMyBackendError(ErrorCause.PlayerNotFound);
     }
 
     return {
@@ -70,7 +71,7 @@ export async function batchSubMatchRecordInputToUseId(
 export async function subMatchRecordUseIdToRecord(useIdRecord: SubMatchRecordUseId): Promise<SubMatchRecord> {
   const player = await getPlayerById(useIdRecord.player_id);
   if (!player) {
-    throw createError({cause: ErrorCause.PlayerNotFound});
+    createMyBackendError(ErrorCause.PlayerNotFound);
   }
 
   return {
@@ -114,7 +115,7 @@ export async function matchRecordUseIdToRecord(useIdMatchRecord: MatchRecordUseI
 export async function getMatchRecordsByPlayerName(name: string): Promise<MatchRecord[]> {
   const playerId = await getPlayerIdByName(name);
   if (!playerId) {
-    throw createError({cause: ErrorCause.PlayerNotFound});
+    createMyBackendError(ErrorCause.PlayerNotFound);
   }
   return getMatchRecordsByPlayerId(playerId);
 }
@@ -170,7 +171,7 @@ export async function matchRecordPlayerIdToPlayerName(matchRecord: MatchRecordUs
 export async function subRecordPlayerIdToPlayerName(subRecord: SubMatchRecordUseId): Promise<SubMatchRecord> {
   const player = await getPlayerById(subRecord.player_id);
   if (!player) {
-    throw createError({cause: ErrorCause.PlayerNotFound});
+    createMyBackendError(ErrorCause.PlayerNotFound);
   }
 
   return {

@@ -5,7 +5,7 @@ import {
   insertMatchRecord,
   updateAllPlayersPoints
 } from "~/server/db-operations/match-record";
-import {createMyError, isMyError} from "~/server/error/error-utils";
+import {createMyAPIError, isMyError} from "~/server/error/error-utils";
 
 function isSubMatchRecordInput(data: any): data is SubMatchRecordInput {
   if (!data || typeof data !== 'object') {
@@ -121,7 +121,7 @@ export default defineEventHandler(async (event) => {
 
   } catch (error: any) {
     if (isMyError(error)) {
-      throw createMyError(error);
+      throw createMyAPIError(error);
     }
 
     console.error(error)

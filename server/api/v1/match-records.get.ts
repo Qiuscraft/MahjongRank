@@ -1,5 +1,5 @@
 import {getMatchRecordsByPlayerName} from "~/server/db-operations/match-record";
-import {createMyError, isMyError} from "~/server/error/error-utils";
+import {createMyAPIError, isMyError} from "~/server/error/error-utils";
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     return await getMatchRecordsByPlayerName(name);
   } catch (error: any) {
     if (isMyError(error)) {
-      throw createMyError(error);
+      throw createMyAPIError(error);
     }
 
     console.error('Error fetching match records:', error)

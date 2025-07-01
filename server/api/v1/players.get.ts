@@ -1,5 +1,5 @@
 import {getPlayerByName, searchPlayer} from "~/server/db-operations/player";
-import {createMyError, isMyError} from "~/server/error/error-utils";
+import {createMyAPIError, createMyBackendError, isMyError} from "~/server/error/error-utils";
 import {ErrorCause} from "~/server/error/error-cause";
 
 export default defineEventHandler(async (event) => {
@@ -12,13 +12,13 @@ export default defineEventHandler(async (event) => {
       if (player) {
         return [player];
       } else {
-        throw createError({cause: ErrorCause.PlayerNotFound});
+        createMyBackendError(ErrorCause.PlayerNotFound);
       }
     }
     return searchPlayer(search_name);
   } catch (error) {
     if (isMyError(error)) {
-      throw createMyError(error);
+      throw createMyAPIError(error);
     }
 
     console.error('Error fetching players:', error);
