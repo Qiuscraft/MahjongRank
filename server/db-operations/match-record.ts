@@ -8,7 +8,7 @@ import {
 import {getPlayerById, getPlayerIdByName, updatePlayerPt} from "~/server/db-operations/player";
 import {MatchRecordSchema} from "~/server/models/match-record.schema";
 import {ErrorCause} from "~/server/error/error-cause";
-import {calculateAllPlayersPt} from "~/server/utils/pt-calculator";
+import {calculateAllPlayersPt} from "~/utils/pt-calculator";
 
 /**
  * 批量将SubMatchRecordInput转换为SubMatchRecordUseId

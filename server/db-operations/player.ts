@@ -1,7 +1,7 @@
 import {Player} from "~/types/player";
 import {PlayerSchema} from "~/server/models/player.schema";
 
-import {Rank, getNextRank, getPreviousRank, getRankConfig, RANK_ORDER} from "~/server/utils/player-rank";
+import {Rank, getNextRank, getPreviousRank, getRankConfig, RANK_ORDER} from "~/utils/player-rank";
 import {createMyError} from "~/server/error/error-utils";
 import {ErrorCause} from "~/server/error/error-cause";
 

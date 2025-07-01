@@ -1,4 +1,4 @@
-import {Rank} from "~/server/utils/player-rank";
+import {Rank} from "~/utils/player-rank";
 
 export interface MatchRecord {
   record_1: SubMatchRecord;

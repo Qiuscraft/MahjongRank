@@ -2,8 +2,8 @@
 import type {MatchRecord} from "~/types/match-record";
 import { StartDirection } from "~/types/match-record";
 import type {TableColumnCtx} from "element-plus";
-import {getRankChineseName} from "~/server/utils/player-rank";
-import {determineMatchLevel, getMatchLevelChinese} from "~/server/utils/pt-calculator";
+import {getRankChineseName} from "~/utils/player-rank";
+import {determineMatchLevel, getMatchLevelChinese} from "~/utils/pt-calculator";
 
 const props = defineProps<{
   name: string
