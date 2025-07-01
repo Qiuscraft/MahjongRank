@@ -1,22 +1,23 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
     <!-- 管理员按钮 - 固定在右上角 -->
-    <div class="fixed top-4 right-4 z-50">
+    <div class="fixed top-4 right-4 z-50 sm:top-4 sm:right-4">
       <NuxtLink
         to="/admin"
-        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+        class="inline-flex items-center px-2 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white text-xs sm:text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
       >
-        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
         </svg>
-        管理后台
+        <span class="hidden sm:inline">管理后台</span>
+        <span class="sm:hidden">管理</span>
       </NuxtLink>
     </div>
 
-    <div class="container mx-auto px-4 py-8 max-w-7xl">
+    <div class="container mx-auto px-4 pt-16 sm:pt-8 pb-8 max-w-7xl">
       <!-- 页面标题 -->
       <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-800 mb-2">麻将比赛记录</h1>
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-2">麻将比赛记录</h1>
         <p class="text-gray-600">查看玩家的比赛记录和统计数据</p>
       </div>
 

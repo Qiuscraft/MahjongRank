@@ -1,19 +1,20 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
     <!-- 返回首页按钮 - 固定在右上角 -->
-    <div class="fixed top-4 right-4 z-50">
+    <div class="fixed top-4 right-4 z-50 sm:top-4 sm:right-4">
       <NuxtLink
         to="/"
-        class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        class="inline-flex items-center px-2 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-xs sm:text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
       >
-        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
           <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
         </svg>
-        返回首页
+        <span class="hidden sm:inline">返回首页</span>
+        <span class="sm:hidden">首页</span>
       </NuxtLink>
     </div>
 
-    <div v-if="!isAuthenticated" class="w-full max-w-md mx-auto p-4 sm:p-6 lg:p-8">
+    <div v-if="!isAuthenticated" class="w-full max-w-md mx-auto p-4 sm:p-6 lg:p-8 pt-16 sm:pt-8">
       <div class="bg-white shadow-lg rounded-xl p-8">
         <h1 class="text-3xl font-extrabold mb-6 text-center text-gray-800">管理员登录</h1>
         <el-form @submit.prevent="login" class="space-y-6">
@@ -28,7 +29,7 @@
       </div>
     </div>
 
-    <div v-else class="container mx-auto p-4 sm:p-6 lg:p-8">
+    <div v-else class="container mx-auto p-4 sm:p-6 lg:p-8 pt-16 sm:pt-8">
       <h1 class="text-3xl sm:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">管理页面</h1>
 
       <!-- 添加玩家 -->
