@@ -60,6 +60,10 @@ pnpm preview
 
 [Apifox](https://apifox.com/apidoc/shared/b793d103-e1b8-4e3c-aac3-ad5f49dd785d)
 
+### 2.3 技术栈
+
+Nuxt + Element Plus + Tailwind CSS
+
 ## 3. 项目需求文档
 
 ### 3.1 雀魂规 - 线下改版
