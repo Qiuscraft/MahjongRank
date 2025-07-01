@@ -2,6 +2,7 @@ import { defineMongooseModel } from '#nuxt/mongoose'
 
 
 import {Rank} from "~/server/utils/player-rank";
+import {MatchType} from "~/types/match-record";
 
 const SubMatchRecordSchema = {
   player_id: {
@@ -46,6 +47,11 @@ export const MatchRecordSchema = defineMongooseModel({
     created_at: {
       type: 'string',
       required: true,
+    },
+    match_type: {
+      type: 'string',
+      required: true,
+      enum: Object.values(MatchType),
     },
   },
 })

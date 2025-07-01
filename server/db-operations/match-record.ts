@@ -8,7 +8,7 @@ import {
 import {getPlayerById, getPlayerIdByName, updatePlayerPt} from "~/server/db-operations/player";
 import {MatchRecordSchema} from "~/server/models/match-record.schema";
 import {ErrorCause} from "~/server/error/error-cause";
-import {calculateAllPlayersPt, MatchType} from "~/server/utils/pt-calculator";
+import {calculateAllPlayersPt} from "~/server/utils/pt-calculator";
 
 /**
  * 批量将SubMatchRecordInput转换为SubMatchRecordUseId
@@ -100,7 +100,8 @@ export async function matchRecordUseIdToRecord(useIdMatchRecord: MatchRecordUseI
     record_2,
     record_3,
     record_4,
-    created_at: useIdMatchRecord.created_at
+    created_at: useIdMatchRecord.created_at,
+    match_type: useIdMatchRecord.match_type,
   };
 }
 
@@ -156,6 +157,7 @@ export async function matchRecordPlayerIdToPlayerName(matchRecord: MatchRecordUs
     record_3: await subRecordPlayerIdToPlayerName(matchRecord.record_3 as unknown as SubMatchRecordUseId),
     record_4: await subRecordPlayerIdToPlayerName(matchRecord.record_4 as unknown as SubMatchRecordUseId),
     created_at: matchRecord.created_at as string,
+    match_type: matchRecord.match_type,
   };
 }
 
@@ -191,6 +193,7 @@ export async function insertMatchRecord(matchRecordUseId: MatchRecordUseId): Pro
     record_3: matchRecordUseId.record_3,
     record_4: matchRecordUseId.record_4,
     created_at: new Date(matchRecordUseId.created_at),
+    match_type: matchRecordUseId.match_type,
   });
 
   return {
@@ -199,6 +202,7 @@ export async function insertMatchRecord(matchRecordUseId: MatchRecordUseId): Pro
     record_3: inserted.record_3 as unknown as SubMatchRecordUseId,
     record_4: inserted.record_4 as unknown as SubMatchRecordUseId,
     created_at: inserted.created_at,
+    match_type: inserted.match_type as MatchType,
   };
 }
 

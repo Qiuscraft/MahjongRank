@@ -1,4 +1,4 @@
-import {MatchRecordUseId, MatchRecordInput, SubMatchRecordInput, StartDirection} from "~/types/match-record";
+import {MatchRecordUseId, MatchRecordInput, SubMatchRecordInput, StartDirection, MatchType} from "~/types/match-record";
 import {
   batchSubMatchRecordInputToUseId,
   matchRecordUseIdToRecord,
@@ -34,9 +34,15 @@ function isMatchRecordInput(data: any): data is MatchRecordInput {
     }
   }
 
-  return !(!data['created_at'] || typeof data['created_at'] !== 'string');
+  if (!data['created_at'] || typeof data['created_at'] !== 'string') {
+    return false;
+  }
 
+  if (!data['match_type'] || typeof data['match_type'] !== 'string' || !Object.values(MatchType).includes(data['match_type'] as MatchType)) {
+    return false;
+  }
 
+  return true;
 }
 
 // 验证函数：检查4个start_direction是否包含East、North、South、West各一个
@@ -87,13 +93,13 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const {record_1, record_2, record_3, record_4, created_at} = body;
+  const {record_1, record_2, record_3, record_4, created_at, match_type} = body;
 
   try {
     // 批量处理所有玩家记录，正确计算pt
     const allRecordsUseId = await batchSubMatchRecordInputToUseId([
       record_1, record_2, record_3, record_4
-    ]);
+    ], match_type);
 
     // 构建用于数据库插入的MatchRecordUseId
     const matchRecordUseId: MatchRecordUseId = {
@@ -102,6 +108,7 @@ export default defineEventHandler(async (event) => {
       record_3: allRecordsUseId[2],
       record_4: allRecordsUseId[3],
       created_at: created_at,
+      match_type: match_type as MatchType,
     };
 
     await updateAllPlayersPoints(matchRecordUseId);

@@ -1,4 +1,5 @@
 import {Rank} from "~/server/utils/player-rank";
+import {MatchType} from "~/types/match-record";
 
 // 比赛等级枚举
 export enum MatchLevel {
@@ -7,12 +8,6 @@ export enum MatchLevel {
   Gold = "gold",
   Jade = "jade",
   Throne = "throne"
-}
-
-// 比赛类型枚举
-export enum MatchType {
-  East = "east", // 东风场
-  South = "south" // 南风场
 }
 
 // 段位到比赛等级的映射

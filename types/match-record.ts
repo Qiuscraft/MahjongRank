@@ -1,12 +1,12 @@
 import {Rank} from "~/server/utils/player-rank";
 
-// TODO: 定义东风场南风场
 export interface MatchRecord {
   record_1: SubMatchRecord;
   record_2: SubMatchRecord;
   record_3: SubMatchRecord;
   record_4: SubMatchRecord;
   created_at: string;
+  match_type: MatchType;
 }
 
 export interface MatchRecordUseId {
@@ -15,6 +15,7 @@ export interface MatchRecordUseId {
   record_3: SubMatchRecordUseId;
   record_4: SubMatchRecordUseId;
   created_at: string;
+  match_type: MatchType;
 }
 
 export interface SubMatchRecordInput {
@@ -29,6 +30,7 @@ export interface MatchRecordInput {
   record_3: SubMatchRecordInput;
   record_4: SubMatchRecordInput;
   created_at: string;
+  match_type: MatchType;
 }
 
 /**
@@ -55,4 +57,9 @@ export enum StartDirection {
   North = "north",
   South = "south",
   West = "west",
+}
+
+export enum MatchType {
+  East = "east",
+  South = "south",
 }
