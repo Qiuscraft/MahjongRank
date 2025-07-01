@@ -1,66 +1,53 @@
 <template>
-  <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">管理页面</h1>
+  <div class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">管理页面</h1>
 
-    <!-- 添加玩家 -->
-    <el-card class="mb-8">
-      <template #header>
-        <div class="card-header">
-          <span>添加玩家</span>
-        </div>
-      </template>
-      <el-form @submit.prevent="addPlayer">
-        <el-form-item label="玩家名称">
-          <el-input v-model="playerName" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" :loading="isAddPlayerLoading" @click="addPlayer">添加</el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+      <!-- 添加玩家 -->
+      <div class="bg-white shadow-lg rounded-xl p-6 mb-10 max-w-lg mx-auto transition-all duration-300 hover:shadow-xl">
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">添加玩家</h2>
+        <el-form @submit.prevent="addPlayer" class="flex flex-col sm:flex-row items-center gap-4">
+          <el-input v-model="playerName" placeholder="输入玩家名称" size="large" class="flex-grow" />
+          <el-button type="primary" :loading="isAddPlayerLoading" @click="addPlayer" size="large" class="w-full sm:w-auto transition-transform duration-200 hover:scale-105">添加</el-button>
+        </el-form>
+      </div>
 
-    <!-- 添加比赛记录 -->
-    <el-card>
-      <template #header>
-        <div class="card-header">
-          <span>添加比赛记录</span>
-        </div>
-      </template>
-      <el-form :model="matchRecordForm" label-width="80px">
-        <el-row :gutter="20" class="items-center">
-          <el-col :span="20">
-            <el-row :gutter="20">
-              <el-col :span="6" v-for="(record, index) in matchRecordForm.records" :key="index">
-                <el-card class="mb-4">
-                  <template #header>
-                    <span>玩家 {{ index + 1 }}</span>
-                  </template>
-                  <el-form-item label="名称">
-                    <el-input v-model="record.player_name" />
-                  </el-form-item>
-                  <el-form-item label="点数">
-                    <el-input-number v-model="record.points" :step="100" />
-                  </el-form-item>
-                  <el-form-item label="起家">
-                    <el-select v-model="record.start_direction" placeholder="请选择">
-                      <el-option v-for="item in startDirections" :key="item.value" :label="item.label" :value="item.value" />
-                    </el-select>
-                  </el-form-item>
-                </el-card>
-              </el-col>
-            </el-row>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="类型" label-position="top">
-              <el-select v-model="matchRecordForm.match_type" placeholder="请选择" class="w-full">
-                <el-option v-for="item in matchTypes" :key="item.value" :label="item.label" :value="item.value" />
-              </el-select>
-            </el-form-item>
-            <el-button type="primary" :loading="isAddMatchLoading" @click="addMatchRecord" class="w-full">添加记录</el-button>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
+      <!-- 添加比赛记录 -->
+      <div class="bg-white shadow-lg rounded-xl p-6">
+        <h2 class="text-2xl font-bold mb-6 text-center text-gray-700">添加比赛记录</h2>
+        <el-form :model="matchRecordForm">
+          <div class="flex flex-col lg:flex-row lg:gap-x-8">
+            <!-- Player Records -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 flex-grow">
+              <div v-for="(record, index) in matchRecordForm.records" :key="index" class="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col gap-y-4 transition-all duration-300 hover:shadow-md hover:border-blue-400">
+                <h3 class="font-bold text-lg text-center text-gray-600">玩家 {{ index + 1 }}</h3>
+                <el-form-item label="名称">
+                  <el-input v-model="record.player_name" />
+                </el-form-item>
+                <el-form-item label="点数">
+                  <el-input-number v-model="record.points" :step="100" class="w-full" />
+                </el-form-item>
+                <el-form-item label="起家">
+                  <el-select v-model="record.start_direction" placeholder="请选择" class="w-full">
+                    <el-option v-for="item in startDirections" :key="item.value" :label="item.label" :value="item.value" />
+                  </el-select>
+                </el-form-item>
+              </div>
+            </div>
+
+            <!-- Match Type and Submit -->
+            <div class="mt-8 lg:mt-0 lg:w-1/5 flex flex-col justify-center gap-y-6">
+              <el-form-item label="类型">
+                <el-select v-model="matchRecordForm.match_type" placeholder="请选择" class="w-full">
+                  <el-option v-for="item in matchTypes" :key="item.value" :label="item.label" :value="item.value" />
+                </el-select>
+              </el-form-item>
+              <el-button type="primary" :loading="isAddMatchLoading" @click="addMatchRecord" size="large" class="w-full transition-transform duration-200 hover:scale-105">添加记录</el-button>
+            </div>
+          </div>
+        </el-form>
+      </div>
+    </div>
   </div>
 </template>
 
