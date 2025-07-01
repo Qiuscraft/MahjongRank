@@ -20,4 +20,7 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  runtimeConfig: {
+    adminPassword: process.env.ADMIN_PASSWORD || 'admin'
+  }
 })

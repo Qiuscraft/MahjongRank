@@ -1,6 +1,21 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+    <div v-if="!isAuthenticated" class="w-full max-w-md mx-auto p-4 sm:p-6 lg:p-8">
+      <div class="bg-white shadow-lg rounded-xl p-8">
+        <h1 class="text-3xl font-extrabold mb-6 text-center text-gray-800">管理员登录</h1>
+        <el-form @submit.prevent="login" class="space-y-6">
+          <el-form-item>
+            <el-input v-model="password" type="password" placeholder="请输入密码" size="large" show-password />
+          </el-form-item>
+          <el-button type="primary" @click="login" :loading="isLoggingIn" size="large" class="w-full transition-transform duration-200 hover:scale-105">
+            登录
+          </el-button>
+        </el-form>
+        <el-alert v-if="loginError" :title="loginError" type="error" class="mt-4" show-icon :closable="false" />
+      </div>
+    </div>
+
+    <div v-else class="container mx-auto p-4 sm:p-6 lg:p-8">
       <h1 class="text-3xl sm:text-4xl font-extrabold mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">管理页面</h1>
 
       <!-- 添加玩家 -->
@@ -53,6 +68,10 @@
 
 <script setup lang="ts">
 import { StartDirection, MatchType } from '~/types/match-record'
+
+// --- Auth ---
+const authCookie = useCookie('mahjong-rank-auth')
+const isAuthenticated = ref(!!authCookie.value)
 
 // --- Add Player ---
 const playerName = ref('')
@@ -129,6 +148,34 @@ const addMatchRecord = async () => {
     ElMessage.error(error.data.statusMessage || '添加比赛记录失败。')
   } finally {
     isAddMatchLoading.value = false
+  }
+}
+
+// --- Login ---
+const password = ref('')
+const isLoggingIn = ref(false)
+const loginError = ref('')
+
+const login = async () => {
+  if (!password.value) {
+    loginError.value = '请输入密码。'
+    return
+  }
+  isLoggingIn.value = true
+  loginError.value = ''
+  try {
+    await $fetch('/api/v1/admin/login', {
+      method: 'POST',
+      body: { password: password.value },
+    })
+    ElMessage.success('登录成功！')
+    password.value = ''
+    isAuthenticated.value = true
+    // Optionally, you can redirect or fetch user info here
+  } catch (error: any) {
+    loginError.value = error.data.statusMessage || '登录失败，请重试。'
+  } finally {
+    isLoggingIn.value = false
   }
 }
 </script>
