@@ -29,7 +29,7 @@ const addPlayer = async () => {
     ElMessage.success('玩家添加成功！')
     playerName.value = ''
   } catch (error: any) {
-    ElMessage.error(error.data.statusMessage || '添加玩家失败。')
+    ElMessage.error(error.data.message || '添加玩家失败。')
   }
 }
 </script>
