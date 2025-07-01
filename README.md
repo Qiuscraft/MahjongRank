@@ -176,15 +176,3 @@ $$
 | 金之间  | 雀杰1星   |
 | 玉之间  | 雀豪1星   |
 | 王座之间 | 雀圣1星   |
-
-## 4. 项目开发文档
-
-### 4.1 IDE推荐
-
-IDE: VS Code
-
-插件：
-
-1. Tailwind CSS IntelliSense
-2. Nuxtr
-3. Vue - Official
