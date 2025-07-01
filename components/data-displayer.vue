@@ -175,6 +175,35 @@ const chartOptions = {
         <Pie :data="rankDistribution" :options="chartOptions" />
       </div>
     </div>
+
+    <!-- 无数据时的占位内容 -->
+    <div class="w-full md:w-2/3 bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center min-h-[400px]" v-else>
+      <div class="text-center">
+        <!-- 图标 -->
+        <div class="mb-6">
+          <svg class="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        </div>
+
+        <!-- 主要文本 -->
+        <h3 class="text-xl font-semibold text-gray-700 mb-2">暂无比赛数据</h3>
+
+        <!-- 描述文本 -->
+        <p class="text-gray-500 mb-6 max-w-sm">
+          该玩家还没有参与任何比赛记录<br>
+          顺位分布图表将在有比赛数据后显示
+        </p>
+
+        <!-- 装饰性元素 -->
+        <div class="flex justify-center space-x-2">
+          <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+          <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+          <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
