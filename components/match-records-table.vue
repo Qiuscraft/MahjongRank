@@ -3,6 +3,7 @@ import type {MatchRecord} from "~/types/match-record";
 import { StartDirection } from "~/types/match-record";
 import type {TableColumnCtx} from "element-plus";
 import {getRankChineseName} from "~/server/utils/player-rank";
+import {determineMatchLevel, getMatchLevelChinese} from "~/server/utils/pt-calculator";
 
 const props = defineProps<{
   name: string
@@ -54,12 +55,18 @@ const tableRowClassName = ({
 function formatRank(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellValue: Rank): string {
   return getRankChineseName(cellValue);
 }
+
+function formatMatchLevel(row: MatchRecord): string {
+  const matchLevel = determineMatchLevel([row.record_1.rank, row.record_2.rank, row.record_3.rank, row.record_4.rank]);
+  return getMatchLevelChinese(matchLevel);
+}
 </script>
 
 <template>
   <div>
     <el-table :data="data" empty-text="暂无数据" :row-class-name="tableRowClassName" :default-sort="{ prop: 'created_at', order: 'descending' } ">
-      <el-table-column prop="created_at" :formatter="formatCreatedAt" label="录入时间" sortable width="140" />
+      <el-table-column prop="created_at" :formatter="formatCreatedAt" label="录入时间" sortable />
+      <el-table-column label="比赛等级" width="85" :formatter="formatMatchLevel" />
       <el-table-column label="1st">
         <el-table-column prop="record_1.player_name" label="玩家" />
         <el-table-column prop="record_1.rank" label="段位" :formatter="formatRank" />

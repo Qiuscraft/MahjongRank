@@ -10,6 +10,24 @@ export enum MatchLevel {
   Throne = "throne"
 }
 
+// MatchLevel 到中文名称的映射
+const matchLevelToChinese: Record<MatchLevel, string> = {
+  [MatchLevel.Bronze]: "铜之间",
+  [MatchLevel.Silver]: "银之间",
+  [MatchLevel.Gold]: "金之间",
+  [MatchLevel.Jade]: "玉之间",
+  [MatchLevel.Throne]: "王座之间"
+};
+
+/**
+ * 将比赛等级转换为中文字符串
+ * @param matchLevel 比赛等级
+ * @returns 对应的中文字符串
+ */
+export function getMatchLevelChinese(matchLevel: MatchLevel): string {
+  return matchLevelToChinese[matchLevel];
+}
+
 // 段位到比赛等级的映射
 const rankToMatchLevel: Record<Rank, MatchLevel> = {
   [Rank.Novice1]: MatchLevel.Bronze,
@@ -158,7 +176,3 @@ export function calculateAllPlayersPt(
 
   return results;
 }
-
-
-
-
