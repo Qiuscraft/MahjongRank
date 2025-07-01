@@ -170,8 +170,8 @@ const chartOptions = {
     </div>
 
     <!-- 右侧图表区域 -->
-    <div class="w-full md:w-2/3 bg-gray-50 rounded-lg p-6" v-if="data.length > 0">
-      <div class="chart-container mx-auto">
+    <div class="w-full md:w-2/3 bg-gray-50 rounded-lg p-6 flex items-center justify-center" v-if="data.length > 0">
+      <div class="chart-container">
         <Pie :data="rankDistribution" :options="chartOptions" />
       </div>
     </div>
@@ -181,9 +181,8 @@ const chartOptions = {
 <style scoped>
 .chart-container {
   position: relative;
-  margin: auto;
-  height: 60vh;
-  width: 80vw;
+  width: 100%;
+  height: 100%;
   max-width: 500px;
   max-height: 500px;
 }

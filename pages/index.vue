@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 py-8 max-w-7xl">
       <!-- 页面标题 -->
       <div class="text-center mb-8">
-        <h1 class="text-4xl font-bold text-gray-800 mb-2">麻将排位记录</h1>
+        <h1 class="text-4xl font-bold text-gray-800 mb-2">麻将比赛记录</h1>
         <p class="text-gray-600">查看玩家的比赛记录和统计数据</p>
       </div>
 
