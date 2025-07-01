@@ -65,7 +65,7 @@ function formatMatchLevel(row: MatchRecord): string {
 <template>
   <div>
     <el-table :data="data" empty-text="暂无数据" :row-class-name="tableRowClassName" :default-sort="{ prop: 'created_at', order: 'descending' } ">
-      <el-table-column prop="created_at" :formatter="formatCreatedAt" label="录入时间" sortable />
+      <el-table-column prop="created_at" :formatter="formatCreatedAt" label="录入时间" width="135" sortable />
       <el-table-column label="比赛等级" width="85" :formatter="formatMatchLevel" />
       <el-table-column label="1st">
         <el-table-column prop="record_1.player_name" label="玩家" />
