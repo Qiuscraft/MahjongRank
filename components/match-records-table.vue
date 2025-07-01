@@ -69,25 +69,25 @@ function formatMatchLevel(row: MatchRecord): string {
       <el-table-column label="比赛等级" width="85" :formatter="formatMatchLevel" />
       <el-table-column label="1st">
         <el-table-column prop="record_1.player_name" label="玩家" />
-        <el-table-column prop="record_1.rank" label="段位" :formatter="formatRank" />
+        <el-table-column prop="record_1.rank" label="段位" width="75" :formatter="formatRank" />
         <el-table-column prop="record_1.points" label="分数" width="80" />
         <el-table-column prop="record_1.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="2nd">
         <el-table-column prop="record_2.player_name" label="玩家" />
-        <el-table-column prop="record_2.rank" label="段位" :formatter="formatRank" />
+        <el-table-column prop="record_2.rank" label="段位" width="75" :formatter="formatRank" />
         <el-table-column prop="record_2.points" label="分数" width="80" />
         <el-table-column prop="record_2.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="3rd">
         <el-table-column prop="record_3.player_name" label="玩家" />
-        <el-table-column prop="record_3.rank" label="段位" :formatter="formatRank" />
+        <el-table-column prop="record_3.rank" label="段位" width="75" :formatter="formatRank" />
         <el-table-column prop="record_3.points" label="分数" width="80" />
         <el-table-column prop="record_3.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
       <el-table-column label="4th">
         <el-table-column prop="record_4.player_name" label="玩家" />
-        <el-table-column prop="record_4.rank" label="段位" :formatter="formatRank" />
+        <el-table-column prop="record_4.rank" label="段位" width="75" :formatter="formatRank" />
         <el-table-column prop="record_4.points" label="分数" width="80" />
         <el-table-column prop="record_4.start_direction" label="起家" width="55" :formatter="formatStartDirection" />
       </el-table-column>
