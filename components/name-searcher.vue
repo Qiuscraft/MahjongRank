@@ -4,6 +4,12 @@ import {Search} from '@element-plus/icons-vue'
 
 const name = defineModel<string>({ default: '' })
 
+const placeholder = defineProps<{
+  placeholder?: string
+}>()
+
+const placeholderText = placeholder.placeholder || '请输入你的用户名...'
+
 interface NameSelectItem {
   value: string
 }
@@ -52,7 +58,7 @@ onMounted(async () => {
     <el-autocomplete
       v-model="name"
       :fetch-suggestions="search"
-      placeholder="请输入你的用户名..."
+      :placeholder="placeholderText"
       @select="handleSelect"
       class="w-full"
       size="large"

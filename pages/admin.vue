@@ -50,7 +50,11 @@
               <div v-for="(record, index) in matchRecordForm.records" :key="index" class="bg-gray-50 border border-gray-200 rounded-lg p-5 flex flex-col gap-y-4 transition-all duration-300 hover:shadow-md hover:border-blue-400">
                 <h3 class="font-bold text-lg text-center text-gray-600">玩家 {{ index + 1 }}</h3>
                 <el-form-item label="名称">
-                  <el-input v-model="record.player_name" />
+                  <NameSearcher
+                    v-model="record.player_name"
+                    @select="(item) => handlePlayerSelect(item, index)"
+                    placeholder=" "
+                  />
                 </el-form-item>
                 <el-form-item label="点数">
                   <el-input-number v-model="record.points" :step="100" class="w-full" />
@@ -166,6 +170,13 @@ const addMatchRecord = async () => {
     ElMessage.error(error.data.statusMessage || '添加比赛记录失败。')
   } finally {
     isAddMatchLoading.value = false
+  }
+}
+
+// Handle player selection from name searcher
+const handlePlayerSelect = (item: any, index: number) => {
+  if (item && item.value) {
+    matchRecordForm.records[index].player_name = item.value
   }
 }
 
