@@ -6,7 +6,7 @@
       @click="showRuleDialog = true"
       class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-md transition-colors duration-200"
     >
-      查看规则
+      查看计分规则
     </el-button>
 
     <!-- 规则弹窗 -->
