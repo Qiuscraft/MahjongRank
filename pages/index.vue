@@ -1,5 +1,11 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+
+    <!-- 规则按钮 - 固定在左上角 -->
+    <div class="fixed top-4 left-4 z-50 sm:top-4 sm:left-4">
+      <RuleButton />
+    </div>
+
     <!-- 管理员按钮 - 固定在右上角 -->
     <div class="fixed top-4 right-4 z-50 sm:top-4 sm:right-4">
       <NuxtLink

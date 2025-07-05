@@ -1,26 +1,30 @@
 <template>
   <div>
-    <!-- 规则按钮 -->
-    <el-button
-      type="primary"
+    <!-- 规则按钮 - 与管理后台按钮风格保持一致 -->
+    <button
       @click="showRuleDialog = true"
-      class="bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-md transition-colors duration-200"
+      class="inline-flex items-center px-2 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-xs sm:text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
     >
-      查看计分规则
-    </el-button>
+      <svg class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+      </svg>
+      <span class="hidden sm:inline">查看规则</span>
+      <span class="sm:hidden">规则</span>
+    </button>
 
     <!-- 规则弹窗 -->
     <el-dialog
       v-model="showRuleDialog"
       title="比赛规则"
-      :width="'80%'"
+      :width="'40%'"
       :max-width="'800px'"
       class="rule-dialog"
     >
       <div class="prose prose-sm max-w-none">
-        <div class="bg-gray-50 p-6 rounded-lg max-h-96 overflow-y-auto">
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg max-h-96 overflow-y-auto border border-blue-200">
           <ContentRenderer v-if="ruleContent" :value="ruleContent" />
-          <div v-else class="text-center text-gray-500">
+          <div v-else class="text-center text-gray-500 py-8">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
             加载中...
           </div>
         </div>
@@ -28,12 +32,12 @@
 
       <template #footer>
         <div class="flex justify-end">
-          <el-button
+          <button
             @click="showRuleDialog = false"
-            class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200"
+            class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
           >
             关闭
-          </el-button>
+          </button>
         </div>
       </template>
     </el-dialog>
