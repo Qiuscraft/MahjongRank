@@ -16,11 +16,18 @@
     <el-dialog
       v-model="showRuleDialog"
       title="比赛规则"
-      :max-width="'200px'"
       class="rule-dialog"
+      :width="dialogWidth"
+      align-center
+      :close-on-click-modal="true"
+      :close-on-press-escape="true"
+      :append-to-body="true"
+      :lock-scroll="true"
+      destroy-on-close
+      :draggable="true"
     >
       <div class="prose prose-sm max-w-none">
-        <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-lg max-h-96 overflow-y-auto border border-blue-200">
+        <div class="bg-gradient-to-br from-blue-50 to-indigo-100 p-3 sm:p-6 rounded-lg max-h-60 sm:max-h-96 overflow-y-auto border border-blue-200">
           <ContentRenderer v-if="ruleContent" :value="ruleContent" />
           <div v-else class="text-center text-gray-500 py-8">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -45,6 +52,40 @@
 
 <script setup lang="ts">
 const showRuleDialog = ref(false)
+
+// 响应式屏幕尺寸检测
+const windowWidth = ref(0)
+
+// 在客户端获取窗口尺寸
+onMounted(() => {
+  if (process.client) {
+    windowWidth.value = window.innerWidth
+
+    const handleResize = () => {
+      windowWidth.value = window.innerWidth
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', handleResize)
+    })
+  }
+})
+
+// 根据屏幕尺寸动态设置对话框宽度
+const dialogWidth = computed(() => {
+  if (windowWidth.value < 640) {
+    return '95%' // 移动端几乎全屏
+  } else if (windowWidth.value < 768) {
+    return '85%' // 平板端
+  } else if (windowWidth.value < 1024) {
+    return '70%' // 中等屏幕
+  } else {
+    return '60%' // 大屏幕
+  }
+})
+
 
 const { data: ruleContent } = await useAsyncData('rule', () => {
   return queryCollection('content').path('/rule').first()
