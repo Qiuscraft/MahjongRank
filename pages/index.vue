@@ -2,12 +2,12 @@
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 relative">
 
     <!-- 规则按钮 - 位于页面左上角 -->
-    <div class="absolute top-4 left-4 z-50 sm:top-4 sm:left-4">
+    <div class="absolute top-4 left-4 sm:top-4 sm:left-4">
       <RuleButton />
     </div>
 
     <!-- 管理员按钮 - 位于页面右上角 -->
-    <div class="absolute top-4 right-4 z-50 sm:top-4 sm:right-4">
+    <div class="absolute top-4 right-4 sm:top-4 sm:right-4">
       <NuxtLink
         to="/admin"
         class="inline-flex items-center px-2 py-1 sm:px-4 sm:py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white text-xs sm:text-sm font-medium rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
