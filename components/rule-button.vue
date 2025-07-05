@@ -16,8 +16,7 @@
     <el-dialog
       v-model="showRuleDialog"
       title="比赛规则"
-      :width="'40%'"
-      :max-width="'800px'"
+      :max-width="'200px'"
       class="rule-dialog"
     >
       <div class="prose prose-sm max-w-none">
