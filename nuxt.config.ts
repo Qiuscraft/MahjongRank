@@ -18,6 +18,7 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-mongoose',
     '@element-plus/nuxt',
+    '@nuxt/content',
   ],
   mongoose: {
     uri: process.env.MONGODB_URI,
