@@ -10,7 +10,7 @@ import {
   CategoryScale
 } from 'chart.js';
 import type {Player} from "~/types/player";
-import {getPromotionPt, getRankChineseName} from "~/utils/player-rank";
+import {getPromotionPt, getRankChineseName, RANK_ORDER} from "~/utils/player-rank";
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
@@ -18,6 +18,75 @@ const props = defineProps<{
   player: Player
   data: MatchRecord[]
 }>();
+
+// 获取玩家排名
+const playerRank = ref<number | null>(null);
+const isLoadingRank = ref(false);
+
+// 计算玩家排名的函数
+const calculatePlayerRank = async () => {
+  isLoadingRank.value = true;
+  try {
+    // 获取所有玩家数据
+    const allPlayers = await $fetch<Player[]>('/api/v1/players', {
+      query: { get_all: 'true' }
+    });
+
+    // 排序玩家：先按段位排序，再按PT排序
+    const sortedPlayers = allPlayers.sort((a, b) => {
+      const aRankIndex = RANK_ORDER.indexOf(a.rank);
+      const bRankIndex = RANK_ORDER.indexOf(b.rank);
+
+      // 如果段位不同，按段位排序（高段位在前）
+      if (aRankIndex !== bRankIndex) {
+        return bRankIndex - aRankIndex;
+      }
+
+      // 如果段位相同，按PT排序（高PT在前）
+      return b.pt - a.pt;
+    });
+
+    // 计算并列排名
+    let currentRank = 1;
+    const playerRankMap = new Map<string, number>();
+
+    for (let i = 0; i < sortedPlayers.length; i++) {
+      const player = sortedPlayers[i];
+
+      // 如果不是第一个玩家，且与前一个玩家不同分，则更新排名
+      if (i > 0) {
+        const prevPlayer = sortedPlayers[i - 1];
+        const prevRankIndex = RANK_ORDER.indexOf(prevPlayer.rank);
+        const currentRankIndex = RANK_ORDER.indexOf(player.rank);
+
+        // 如果段位不同或PT不同，排名递增
+        if (prevRankIndex !== currentRankIndex || prevPlayer.pt !== player.pt) {
+          currentRank = i + 1;
+        }
+      }
+
+      playerRankMap.set(player._id, currentRank);
+    }
+
+    // 获取当前玩家的排名
+    playerRank.value = playerRankMap.get(props.player._id) || null;
+  } catch (error) {
+    console.error('获取玩家排名失败:', error);
+    playerRank.value = null;
+  } finally {
+    isLoadingRank.value = false;
+  }
+};
+
+// 组件挂载时计算排名
+onMounted(() => {
+  calculatePlayerRank();
+});
+
+// 当玩家数据变化时重新计算排名
+watch(() => props.player, () => {
+  calculatePlayerRank();
+}, { deep: true });
 
 const maxPoints = computed<number>(() => {
   const pointsList = props.data.flatMap(matchRecord => {
@@ -149,7 +218,9 @@ const chartOptions = {
       </div>
       <div class="bg-gray-50 rounded-lg p-4">
         <div class="text-sm text-gray-600">排名</div>
-        <div class="text-lg font-bold text-gray-800">-</div>
+        <div class="text-lg font-bold text-gray-800" v-if="!isLoadingRank && playerRank !== null">{{ playerRank }}</div>
+        <div class="text-sm text-gray-500 animate-pulse" v-else-if="isLoadingRank">加载中...</div>
+        <div class="text-sm text-gray-500" v-else>-</div>
       </div>
       <div class="bg-gray-50 rounded-lg p-4">
         <div class="text-sm text-gray-600">总局数</div>
