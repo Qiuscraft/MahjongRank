@@ -21,6 +21,8 @@ const props = defineProps<{
 
 // 获取玩家排名
 const playerRank = ref<number | null>(null);
+const lastRank = ref<number | null>(null);
+const defeatPercentage = ref<number | null>(null);
 const isLoadingRank = ref(false);
 
 // 计算玩家排名的函数
@@ -49,6 +51,7 @@ const calculatePlayerRank = async () => {
     // 计算并列排名
     let currentRank = 1;
     const playerRankMap = new Map<string, number>();
+    let maxRank = 1; // 记录最后一名的排名
 
     for (let i = 0; i < sortedPlayers.length; i++) {
       const player = sortedPlayers[i];
@@ -66,13 +69,35 @@ const calculatePlayerRank = async () => {
       }
 
       playerRankMap.set(player._id, currentRank);
+      maxRank = Math.max(maxRank, currentRank); // 更新最后一名排名
     }
 
     // 获取当前玩家的排名
-    playerRank.value = playerRankMap.get(props.player._id) || null;
+    const currentPlayerRank = playerRankMap.get(props.player._id);
+    playerRank.value = currentPlayerRank || null;
+    lastRank.value = maxRank;
+
+    // 计算打败百分比
+    if (currentPlayerRank && maxRank > 1) {
+      // 计算被打败的玩家数量：总排名数 - 当前排名
+      const defeatedPlayers = maxRank - currentPlayerRank;
+      // 计算百分比：被打败的玩家数 / (总排名数 - 1) * 100
+      // 减1是因为不包括自己
+      defeatPercentage.value = Math.round((defeatedPlayers / (maxRank - 1)) * 100);
+    } else if (currentPlayerRank === 1 && maxRank > 1) {
+      // 如果是第一名且不是唯一玩家，打败100%
+      defeatPercentage.value = 100;
+    } else if (maxRank === 1) {
+      // 如果只有一个玩家，打败0%
+      defeatPercentage.value = 0;
+    } else {
+      defeatPercentage.value = null;
+    }
   } catch (error) {
     console.error('获取玩家排名失败:', error);
     playerRank.value = null;
+    lastRank.value = null;
+    defeatPercentage.value = null;
   } finally {
     isLoadingRank.value = false;
   }
@@ -218,7 +243,12 @@ const chartOptions = {
       </div>
       <div class="bg-gray-50 rounded-lg p-4">
         <div class="text-sm text-gray-600">排名</div>
-        <div class="text-lg font-bold text-gray-800" v-if="!isLoadingRank && playerRank !== null">{{ playerRank }}</div>
+        <div class="text-lg font-bold text-gray-800" v-if="!isLoadingRank && playerRank !== null && lastRank !== null">
+          {{ playerRank }}/{{ lastRank }}
+          <span v-if="defeatPercentage !== null" class="text-sm text-gray-600 ml-2">
+            （打败 {{ defeatPercentage }}% 的玩家）
+          </span>
+        </div>
         <div class="text-sm text-gray-500 animate-pulse" v-else-if="isLoadingRank">加载中...</div>
         <div class="text-sm text-gray-500" v-else>-</div>
       </div>
