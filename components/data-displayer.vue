@@ -145,11 +145,11 @@ const chartOptions = {
     <div class="w-full md:w-1/3 space-y-4">
       <div class="bg-gray-50 rounded-lg p-4">
         <div class="text-sm text-gray-600">段位</div>
-        <div class="text-lg font-bold text-gray-800">{{getRankChineseName(player.rank)}}</div>
+        <div class="text-lg font-bold text-gray-800">{{getRankChineseName(player.rank)}} ({{player.pt}}/{{getPromotionPt(player.rank)}})</div>
       </div>
       <div class="bg-gray-50 rounded-lg p-4">
-        <div class="text-sm text-gray-600">PT</div>
-        <div class="text-lg font-bold text-gray-800">{{player.pt}}/{{getPromotionPt(player.rank)}}</div>
+        <div class="text-sm text-gray-600">排名</div>
+        <div class="text-lg font-bold text-gray-800">-</div>
       </div>
       <div class="bg-gray-50 rounded-lg p-4">
         <div class="text-sm text-gray-600">总局数</div>
