@@ -231,78 +231,340 @@ const chartOptions = {
     }
   }
 };
+
+// 计算对位胜率
+const headToHeadStats = computed(() => {
+  // 收集所有与当前玩家对战的其他玩家
+  const opponents = new Map<string, { wins: number, total: number }>();
+
+  props.data.forEach(matchRecord => {
+    // 找到当前玩家在这场比赛中的排名
+    let currentPlayerRank = 0;
+    const subRecords = [matchRecord.record_1, matchRecord.record_2, matchRecord.record_3, matchRecord.record_4];
+
+    // 确定当前玩家的排名
+    subRecords.forEach((record, index) => {
+      if (record.player_name === props.player.name) {
+        currentPlayerRank = index + 1;
+      }
+    });
+
+    // 如果当前玩家参与了这场比赛
+    if (currentPlayerRank > 0) {
+      // 检查其他玩家的排名
+      subRecords.forEach((record, index) => {
+        if (record.player_name !== props.player.name) {
+          const opponentRank = index + 1;
+          const opponentName = record.player_name;
+
+          // 初始化对手统计
+          if (!opponents.has(opponentName)) {
+            opponents.set(opponentName, { wins: 0, total: 0 });
+          }
+
+          const stats = opponents.get(opponentName)!;
+          stats.total++;
+
+          // 如果当前玩家排名更高（数字更小），则算作胜利
+          if (currentPlayerRank < opponentRank) {
+            stats.wins++;
+          }
+        }
+      });
+    }
+  });
+
+  // 转换为数组并计算胜率
+  const result = Array.from(opponents.entries())
+    .map(([opponentName, stats]) => ({
+      opponentName,
+      wins: stats.wins,
+      total: stats.total,
+      winRate: stats.total > 0 ? Math.round((stats.wins / stats.total) * 100) : 0
+    }));
+
+  return result;
+});
+
+// 排序相关的响应式变量
+const sortField = ref<'wins' | 'total' | 'winRate'>('total');
+const sortOrder = ref<'asc' | 'desc'>('desc');
+
+// 排序后的对位胜率数据
+const sortedHeadToHeadStats = computed(() => {
+  const stats = [...headToHeadStats.value];
+
+  stats.sort((a, b) => {
+    let aValue = a[sortField.value];
+    let bValue = b[sortField.value];
+
+    // 数值比较
+    if (sortOrder.value === 'asc') {
+      return aValue - bValue;
+    } else {
+      return bValue - aValue;
+    }
+  });
+
+  return stats;
+});
+
+// 切换排序的函数
+const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
+  if (sortField.value === field) {
+    // 如果点击的是当前排序字段，切换排序方向
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
+  } else {
+    // 如果点击的是新字段，设置为该字段并默认降序
+    sortField.value = field;
+    sortOrder.value = 'desc';
+  }
+};
 </script>
 
 <template>
-  <div class="flex flex-col md:flex-row gap-6">
-    <!-- 左侧数据区域 -->
-    <div class="w-full md:w-1/3 space-y-4">
-      <div class="bg-gray-50 rounded-lg p-4">
-        <div class="text-sm text-gray-600">段位</div>
-        <div class="text-lg font-bold text-gray-800">{{getRankChineseName(player.rank)}} ({{player.pt}}/{{getPromotionPt(player.rank)}})</div>
-      </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <div class="text-sm text-gray-600">排名</div>
-        <div class="text-lg font-bold text-gray-800" v-if="!isLoadingRank && playerRank !== null && lastRank !== null">
-          {{ playerRank }}/{{ lastRank }}
-          <span v-if="defeatPercentage !== null" class="text-sm text-gray-600 ml-2">
-            （打败 {{ defeatPercentage }}% 的玩家）
-          </span>
+  <div class="space-y-6">
+    <div class="flex flex-col md:flex-row gap-6">
+      <!-- 左侧数据区域 -->
+      <div class="w-full md:w-1/3 space-y-4">
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-600">段位</div>
+          <div class="text-lg font-bold text-gray-800">{{getRankChineseName(player.rank)}} ({{player.pt}}/{{getPromotionPt(player.rank)}})</div>
         </div>
-        <div class="text-sm text-gray-500 animate-pulse" v-else-if="isLoadingRank">加载中...</div>
-        <div class="text-sm text-gray-500" v-else>-</div>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-600">排名</div>
+          <div class="text-lg font-bold text-gray-800" v-if="!isLoadingRank && playerRank !== null && lastRank !== null">
+            {{ playerRank }}/{{ lastRank }}
+            <span v-if="defeatPercentage !== null" class="text-sm text-gray-600 ml-2">
+              （打败 {{ defeatPercentage }}% 的玩家）
+            </span>
+          </div>
+          <div class="text-sm text-gray-500 animate-pulse" v-else-if="isLoadingRank">加载中...</div>
+          <div class="text-sm text-gray-500" v-else>-</div>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-600">总局数</div>
+          <div class="text-lg font-bold text-gray-800">{{data.length}}</div>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-600">最高点数</div>
+          <div class="text-lg font-bold text-gray-800">{{maxPoints}}</div>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-600">平均点数</div>
+          <div class="text-lg font-bold text-gray-800">{{averagePoints}}</div>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-600">平均顺位</div>
+          <div class="text-lg font-bold text-gray-800">{{averageRank}}</div>
+        </div>
       </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <div class="text-sm text-gray-600">总局数</div>
-        <div class="text-lg font-bold text-gray-800">{{data.length}}</div>
+
+      <!-- 右侧图表区域 -->
+      <div class="w-full md:w-2/3 bg-gray-50 rounded-lg p-6 flex items-center justify-center" v-if="data.length > 0">
+        <div class="chart-container">
+          <Pie :data="rankDistribution" :options="chartOptions" />
+        </div>
       </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <div class="text-sm text-gray-600">最高点数</div>
-        <div class="text-lg font-bold text-gray-800">{{maxPoints}}</div>
-      </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <div class="text-sm text-gray-600">平均点数</div>
-        <div class="text-lg font-bold text-gray-800">{{averagePoints}}</div>
-      </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <div class="text-sm text-gray-600">平均顺位</div>
-        <div class="text-lg font-bold text-gray-800">{{averageRank}}</div>
+
+      <!-- 无数据时的占位内容 -->
+      <div class="w-full md:w-2/3 bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center min-h-[400px]" v-else>
+        <div class="text-center">
+          <!-- 图标 -->
+          <div class="mb-6">
+            <svg class="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+
+          <!-- 主要文本 -->
+          <h3 class="text-xl font-semibold text-gray-700 mb-2">暂无比赛数据</h3>
+
+          <!-- 描述文本 -->
+          <p class="text-gray-500 mb-6 max-w-sm">
+            该玩家还没有参与任何比赛记录<br>
+            顺位分布图表将在有比赛数据后显示
+          </p>
+
+          <!-- 装饰性元素 -->
+          <div class="flex justify-center space-x-2">
+            <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+            <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+            <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- 右侧图表区域 -->
-    <div class="w-full md:w-2/3 bg-gray-50 rounded-lg p-6 flex items-center justify-center" v-if="data.length > 0">
-      <div class="chart-container">
-        <Pie :data="rankDistribution" :options="chartOptions" />
+    <!-- 对位胜率表格 -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200" v-if="headToHeadStats.length > 0">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-800">对位胜率</h3>
+        <p class="text-sm text-gray-600 mt-1">与其他玩家的对战胜率统计</p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                对手玩家
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <button
+                  @click="toggleSort('wins')"
+                  class="flex items-center space-x-1 hover:text-gray-700 transition-colors"
+                >
+                  <span>胜场数</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      v-if="sortField === 'wins' && sortOrder === 'asc'"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 15l7-7 7 7"
+                    />
+                    <path
+                      v-else-if="sortField === 'wins' && sortOrder === 'desc'"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                    <path
+                      v-else
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+                    />
+                  </svg>
+                </button>
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <button
+                  @click="toggleSort('total')"
+                  class="flex items-center space-x-1 hover:text-gray-700 transition-colors"
+                  :class="{ 'text-blue-600 font-semibold': sortField === 'total' }"
+                >
+                  <span>总场数</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      v-if="sortField === 'total' && sortOrder === 'asc'"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 15l7-7 7 7"
+                    />
+                    <path
+                      v-else-if="sortField === 'total' && sortOrder === 'desc'"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                    <path
+                      v-else
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+                    />
+                  </svg>
+                </button>
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <button
+                  @click="toggleSort('winRate')"
+                  class="flex items-center space-x-1 hover:text-gray-700 transition-colors"
+                >
+                  <span>胜率</span>
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path
+                      v-if="sortField === 'winRate' && sortOrder === 'asc'"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 15l7-7 7 7"
+                    />
+                    <path
+                      v-else-if="sortField === 'winRate' && sortOrder === 'desc'"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                    <path
+                      v-else
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+                    />
+                  </svg>
+                </button>
+              </th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                胜率图示
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <tr v-for="stat in sortedHeadToHeadStats" :key="stat.opponentName" class="hover:bg-gray-50">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                {{ stat.opponentName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ stat.wins }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                {{ stat.total }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <span :class="{
+                  'text-green-600 font-semibold': stat.winRate >= 60,
+                  'text-blue-600 font-semibold': stat.winRate >= 50 && stat.winRate < 60,
+                  'text-orange-600 font-semibold': stat.winRate >= 40 && stat.winRate < 50,
+                  'text-red-600 font-semibold': stat.winRate < 40
+                }">
+                  {{ stat.winRate }}%
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="w-full bg-gray-200 rounded-full h-2 max-w-[100px]">
+                    <div
+                      :class="{
+                        'bg-green-500': stat.winRate >= 60,
+                        'bg-blue-500': stat.winRate >= 50 && stat.winRate < 60,
+                        'bg-orange-500': stat.winRate >= 40 && stat.winRate < 50,
+                        'bg-red-500': stat.winRate < 40
+                      }"
+                      class="h-2 rounded-full transition-all duration-300"
+                      :style="{ width: stat.winRate + '%' }"
+                    ></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <!-- 无数据时的占位内容 -->
-    <div class="w-full md:w-2/3 bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center min-h-[400px]" v-else>
+    <!-- 无对位数据时的占位内容 -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8" v-else-if="data.length > 0">
       <div class="text-center">
-        <!-- 图标 -->
-        <div class="mb-6">
-          <svg class="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="mb-4">
+          <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
           </svg>
         </div>
-
-        <!-- 主要文本 -->
-        <h3 class="text-xl font-semibold text-gray-700 mb-2">暂无比赛数据</h3>
-
-        <!-- 描述文本 -->
-        <p class="text-gray-500 mb-6 max-w-sm">
-          该玩家还没有参与任何比赛记录<br>
-          顺位分布图表将在有比赛数据后显示
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">暂无对位数据</h3>
+        <p class="text-gray-500">
+          该玩家还没有与其他玩家进行过对战
         </p>
-
-        <!-- 装饰性元素 -->
-        <div class="flex justify-center space-x-2">
-          <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
-          <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
-          <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
-        </div>
       </div>
     </div>
   </div>
