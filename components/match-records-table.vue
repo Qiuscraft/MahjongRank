@@ -44,7 +44,7 @@ const tableRowClassName = ({
   if (row.record_1.player_name === props.name) {
     return 'success-row'
   } else if (row.record_2.player_name === props.name) {
-    return 'info-row'
+    return 'primary-row'
   } else if (row.record_3.player_name === props.name) {
     return 'warning-row'
   } else if (row.record_4.player_name === props.name) {
@@ -94,28 +94,28 @@ function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellVal
         />
 
         <!-- 第1位 -->
-        <el-table-column label="🥇 第1位" header-align="center">
+        <el-table-column label="1位" header-align="center">
           <el-table-column prop="record_1.player_name" label="玩家" />
           <el-table-column prop="record_1.pt" label="PT" :formatter="formatPt" class-name="font-medium text-green-600"/>
           <el-table-column prop="record_1.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第2位 -->
-        <el-table-column label="🥈 第2位" header-align="center">
+        <el-table-column label="2位" header-align="center">
           <el-table-column prop="record_2.player_name" label="玩家" />
           <el-table-column prop="record_2.pt" label="PT" :formatter="formatPt" class-name="font-medium text-blue-600"/>
           <el-table-column prop="record_2.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第3位 -->
-        <el-table-column label="🥉 第3位" header-align="center">
+        <el-table-column label="3位" header-align="center">
           <el-table-column prop="record_3.player_name" label="玩家" />
           <el-table-column prop="record_3.pt" label="PT" :formatter="formatPt" class-name="font-medium text-orange-600"/>
           <el-table-column prop="record_3.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第4位 -->
-        <el-table-column label="4️⃣ 第4位" header-align="center">
+        <el-table-column label="4位" header-align="center">
           <el-table-column prop="record_4.player_name" label="玩家" />
           <el-table-column prop="record_4.pt" label="PT" :formatter="formatPt" class-name="font-medium text-red-600"/>
           <el-table-column prop="record_4.points" label="点数" class-name="font-medium"/>
@@ -132,8 +132,8 @@ function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellVal
 .el-table .warning-row {
   --el-table-tr-bg-color: var(--el-color-warning-light-9);
 }
-.el-table .info-row {
-  --el-table-tr-bg-color: var(--el-color-info-light-9);
+.el-table .primary-row {
+  --el-table-tr-bg-color: var(--el-color-primary-light-9);
 }
 .el-table .success-row {
   --el-table-tr-bg-color: var(--el-color-success-light-9);
