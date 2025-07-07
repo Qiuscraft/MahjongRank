@@ -200,7 +200,7 @@ const rankDistribution = computed(() => {
       data: [rankCounts[1], rankCounts[2], rankCounts[3], rankCounts[4]],
       backgroundColor: [
         '#67C23A', // success绿色 - 第1位
-        '#909399', // info���������������������蓝色 - 第2位
+        '#409EFF', // info���������������������蓝色 - 第2位
         '#E6A23C', // warning橙色 - 第3位
         '#F56C6C'  // danger红色 - 第4位
       ],
