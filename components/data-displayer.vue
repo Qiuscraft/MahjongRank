@@ -491,7 +491,7 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
           </div>
           <div class="bg-white rounded p-1.5 shadow-sm">
             <div class="text-xs text-gray-500">二位</div>
-            <div class="font-bold text-gray-600 text-sm">{{ rankDistribution.datasets[0].data[1] }}</div>
+            <div class="font-bold text-blue-600 text-sm">{{ rankDistribution.datasets[0].data[1] }}</div>
           </div>
           <div class="bg-white rounded p-1.5 shadow-sm">
             <div class="text-xs text-gray-500">三位</div>
