@@ -12,7 +12,8 @@ export default defineEventHandler(async (event) => {
       if (player) {
         return [player];
       } else {
-        createMyBackendError(ErrorCause.PlayerNotFound);
+        // 关键修改：抛出错误而不是仅创建错误
+        throw createMyBackendError(ErrorCause.PlayerNotFound);
       }
     }
     return searchPlayer(search_name);
