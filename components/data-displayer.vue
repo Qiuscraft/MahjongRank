@@ -475,12 +475,12 @@ const nextLevelPoints = computed(() => {
 
       <!-- 中间对位胜率表格 -->
       <div class="w-full lg:w-2/5">
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 h-full" v-if="headToHeadStats.length > 0">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200" v-if="headToHeadStats.length > 0">
           <div class="px-4 py-3 border-b border-gray-200">
             <h3 class="text-lg font-semibold text-gray-800">对位胜率</h3>
             <p class="text-sm text-gray-600 mt-1">与其他玩家的对战统计</p>
           </div>
-          <div class="overflow-x-auto max-h-[500px] overflow-y-auto">
+          <div class="overflow-x-auto overflow-y-auto">
             <table class="w-full">
               <thead class="bg-gray-50 sticky top-0 z-10">
                 <tr>
@@ -579,14 +579,14 @@ const nextLevelPoints = computed(() => {
       </div>
 
       <!-- 右侧图表区域 -->
-      <div class="w-full lg:w-2/5 bg-gray-50 rounded-lg p-4 flex flex-col h-full" v-if="data.length > 0">
+      <div class="w-full lg:w-2/5 bg-gray-50 rounded-lg p-4 flex flex-col" v-if="data.length > 0">
         <!-- 饼图容器，增加高度 -->
         <div class="chart-container mx-auto">
           <Pie :data="rankDistribution" :options="chartOptions" />
         </div>
 
         <!-- 顺位统计详情 -->
-        <div class="mt-auto grid grid-cols-5 gap-2 text-center">
+        <div class="mt-4 grid grid-cols-5 gap-2 text-center">
           <div class="bg-white rounded p-1.5 shadow-sm">
             <div class="text-xs text-gray-500">总数</div>
             <div class="font-bold text-gray-800 text-sm">{{ data.length }}</div>
