@@ -65,6 +65,25 @@ function formatMatchLevel(row: MatchRecord): string {
 function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellValue: number): string {
   return cellValue < 0 ? cellValue.toString() : `+${cellValue}`;
 }
+
+// 根据玩家名称和位次获取PT值对应的样式类
+function getPtClassForPlayer(recordPosition: number, playerName: string): string {
+  if (playerName === props.name) {
+    switch (recordPosition) {
+      case 1:
+        return 'success-pt font-bold'; // success颜色
+      case 2:
+        return 'primary-pt font-bold';  // primary颜色
+      case 3:
+        return 'warning-pt font-bold'; // warning颜色
+      case 4:
+        return 'danger-pt font-bold';   // danger颜色
+      default:
+        return '';
+    }
+  }
+  return '';
+}
 </script>
 
 <template>
@@ -95,28 +114,44 @@ function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellVal
         <!-- 第1位 -->
         <el-table-column label="1位" header-align="center">
           <el-table-column prop="record_1.player_name" label="玩家" />
-          <el-table-column prop="record_1.pt" label="PT" :formatter="formatPt" class-name="font-medium"/>
+          <el-table-column prop="record_1.pt" label="PT" class-name="font-medium">
+            <template #default="scope">
+              <span :class="getPtClassForPlayer(1, scope.row.record_1.player_name)">{{ formatPt(scope.row, undefined, scope.row.record_1.pt) }}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="record_1.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第2位 -->
         <el-table-column label="2位" header-align="center">
           <el-table-column prop="record_2.player_name" label="玩家" />
-          <el-table-column prop="record_2.pt" label="PT" :formatter="formatPt" class-name="font-medium"/>
+          <el-table-column prop="record_2.pt" label="PT" class-name="font-medium">
+            <template #default="scope">
+              <span :class="getPtClassForPlayer(2, scope.row.record_2.player_name)">{{ formatPt(scope.row, undefined, scope.row.record_2.pt) }}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="record_2.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第3位 -->
         <el-table-column label="3位" header-align="center">
           <el-table-column prop="record_3.player_name" label="玩家" />
-          <el-table-column prop="record_3.pt" label="PT" :formatter="formatPt" class-name="font-medium"/>
+          <el-table-column prop="record_3.pt" label="PT" class-name="font-medium">
+            <template #default="scope">
+              <span :class="getPtClassForPlayer(3, scope.row.record_3.player_name)">{{ formatPt(scope.row, undefined, scope.row.record_3.pt) }}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="record_3.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第4位 -->
         <el-table-column label="4位" header-align="center">
           <el-table-column prop="record_4.player_name" label="玩家" />
-          <el-table-column prop="record_4.pt" label="PT" :formatter="formatPt" class-name="font-medium"/>
+          <el-table-column prop="record_4.pt" label="PT" class-name="font-medium">
+            <template #default="scope">
+              <span :class="getPtClassForPlayer(4, scope.row.record_4.player_name)">{{ formatPt(scope.row, undefined, scope.row.record_4.pt) }}</span>
+            </template>
+          </el-table-column>
           <el-table-column prop="record_4.points" label="点数" class-name="font-medium"/>
         </el-table-column>
       </el-table>
@@ -136,5 +171,17 @@ function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellVal
 }
 .el-table .success-row {
   --el-table-tr-bg-color: var(--el-color-success-light-9);
+}
+.el-table .danger-pt {
+  color: var(--el-color-danger);
+}
+.el-table .warning-pt {
+  color: var(--el-color-warning);
+}
+.el-table .primary-pt {
+  color: var(--el-color-primary);
+}
+.el-table .success-pt {
+  color: var(--el-color-success);
 }
 </style>
