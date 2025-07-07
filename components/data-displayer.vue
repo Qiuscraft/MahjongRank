@@ -470,7 +470,7 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
         </div>
 
         <!-- 无对位数据时的占位内容 -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 h-full flex items-center justify-center" v-else-if="data.length > 0">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 h-full flex items-center justify-center" v-else>
           <div class="text-center">
             <div class="mb-4">
               <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
