@@ -96,28 +96,28 @@ function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellVal
         <!-- 第1位 -->
         <el-table-column label="1位" header-align="center">
           <el-table-column prop="record_1.player_name" label="玩家" />
-          <el-table-column prop="record_1.pt" label="PT" :formatter="formatPt" class-name="font-medium text-green-600"/>
+          <el-table-column prop="record_1.pt" label="PT" :formatter="formatPt" class-name="font-medium"/>
           <el-table-column prop="record_1.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第2位 -->
         <el-table-column label="2位" header-align="center">
           <el-table-column prop="record_2.player_name" label="玩家" />
-          <el-table-column prop="record_2.pt" label="PT" :formatter="formatPt" class-name="font-medium text-blue-600"/>
+          <el-table-column prop="record_2.pt" label="PT" :formatter="formatPt" class-name="font-medium"/>
           <el-table-column prop="record_2.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第3位 -->
         <el-table-column label="3位" header-align="center">
           <el-table-column prop="record_3.player_name" label="玩家" />
-          <el-table-column prop="record_3.pt" label="PT" :formatter="formatPt" class-name="font-medium text-orange-600"/>
+          <el-table-column prop="record_3.pt" label="PT" :formatter="formatPt" class-name="font-medium"/>
           <el-table-column prop="record_3.points" label="点数" class-name="font-medium"/>
         </el-table-column>
 
         <!-- 第4位 -->
         <el-table-column label="4位" header-align="center">
           <el-table-column prop="record_4.player_name" label="玩家" />
-          <el-table-column prop="record_4.pt" label="PT" :formatter="formatPt" class-name="font-medium text-red-600"/>
+          <el-table-column prop="record_4.pt" label="PT" :formatter="formatPt" class-name="font-medium"/>
           <el-table-column prop="record_4.points" label="点数" class-name="font-medium"/>
         </el-table-column>
       </el-table>
