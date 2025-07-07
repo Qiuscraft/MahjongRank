@@ -10,7 +10,8 @@ import {
   CategoryScale
 } from 'chart.js';
 import type {Player} from "~/types/player";
-import {getPromotionPt, getRankChineseName, RANK_ORDER} from "~/utils/player-rank";
+import {getPromotionPt, getRankChineseName, RANK_ORDER, Rank} from "~/utils/player-rank";
+import {MatchLevel, getMatchLevelChinese, rankToMatchLevel, matchLevelMinRank, rank4thPenaltyConfig} from "~/utils/pt-calculator";
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale);
 
@@ -340,6 +341,75 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
 const isNoRankDownRank = computed(() => {
   return props.player.rank.startsWith('novice_') || props.player.rank.startsWith('practitioner_');
 });
+
+// 计算当前比赛等级和下一个比赛等级
+const currentMatchLevel = computed((): MatchLevel => {
+  return rankToMatchLevel[props.player.rank as Rank];
+});
+
+const nextMatchLevel = computed((): MatchLevel | null => {
+  const currentIndex = RANK_ORDER.indexOf(props.player.rank as Rank);
+  if (currentIndex < 0 || currentIndex === RANK_ORDER.length - 1) return null;
+
+  // 寻找下一个不同的比赛等级
+  let nextLevel: MatchLevel | null = null;
+  for (let i = currentIndex + 1; i < RANK_ORDER.length; i++) {
+    const nextRankMatchLevel = rankToMatchLevel[RANK_ORDER[i]];
+    if (nextRankMatchLevel !== currentMatchLevel.value) {
+      nextLevel = nextRankMatchLevel;
+      break;
+    }
+  }
+  return nextLevel;
+});
+
+// 计算南风场顺位得点
+function calculateSouthRoundPoints(matchLevel: MatchLevel, playerRank: Rank): number[] {
+  // 基础马点 [1位, 2位, 3位, 4位]
+  const basePoints = [15, 5, -5, -15];
+
+  // 南风场的1/2顺位额外段位分
+  const rankBonusConfig = {
+    [MatchLevel.Bronze]: [20, 10],
+    [MatchLevel.Silver]: [40, 20],
+    [MatchLevel.Gold]: [80, 40],
+    [MatchLevel.Jade]: [110, 55],
+    [MatchLevel.Throne]: [120, 60],
+  };
+
+  // 1/2位的额外段位分
+  const extraPoints1 = rankBonusConfig[matchLevel][0];
+  const extraPoints2 = rankBonusConfig[matchLevel][1];
+
+  // 计算4位的额外扣分
+  // 获取比赛等级对应的推荐最低段位
+  const minRank = matchLevelMinRank[matchLevel];
+
+  // 如果玩家段位低于推荐最低段位，使用推荐最低段位计算扣分
+  const rankToUse = RANK_ORDER.indexOf(playerRank) < RANK_ORDER.indexOf(minRank) ? minRank : playerRank;
+
+  // 获取南风场的4位额外扣分
+  const extraPoints4 = -rank4thPenaltyConfig[rankToUse].south;
+
+  return [
+    basePoints[0] + extraPoints1,
+    basePoints[1] + extraPoints2,
+    basePoints[2],
+    basePoints[3] + extraPoints4
+  ];
+}
+
+// 计算当前比赛等级和下一个比赛等级的顺位得点
+const currentLevelPoints = computed(() => {
+  return calculateSouthRoundPoints(currentMatchLevel.value, props.player.rank as Rank);
+});
+
+const nextLevelPoints = computed(() => {
+  if (!nextMatchLevel.value) {
+    return currentLevelPoints.value;
+  }
+  return calculateSouthRoundPoints(nextMatchLevel.value, props.player.rank as Rank);
+});
 </script>
 
 <template>
@@ -355,6 +425,25 @@ const isNoRankDownRank = computed(() => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             初心和雀士不会掉段
+          </div>
+          <!-- 添加顺位得点提示 -->
+          <div class="mt-2 pt-2 border-t border-gray-200">
+            <div class="text-xs text-gray-600 mb-1">{{ getMatchLevelChinese(currentMatchLevel) }}南风场顺位得点（1/2/3/4）：</div>
+            <div class="text-xs font-medium">
+              <span class="text-green-600">{{ currentLevelPoints[0] }}</span>/
+              <span class="text-blue-600">{{ currentLevelPoints[1] }}</span>/
+              <span class="text-orange-600">{{ currentLevelPoints[2] }}</span>/
+              <span class="text-red-600">{{ currentLevelPoints[3] }}</span>
+            </div>
+            <div v-if="nextMatchLevel" class="text-xs text-gray-600 mt-1 mb-1">
+              {{ getMatchLevelChinese(nextMatchLevel) }}南风场顺位得点（1/2/3/4）：
+            </div>
+            <div v-if="nextMatchLevel" class="text-xs font-medium">
+              <span class="text-green-600">{{ nextLevelPoints[0] }}</span>/
+              <span class="text-blue-600">{{ nextLevelPoints[1] }}</span>/
+              <span class="text-orange-600">{{ nextLevelPoints[2] }}</span>/
+              <span class="text-red-600">{{ nextLevelPoints[3] }}</span>
+            </div>
           </div>
         </div>
         <div class="bg-gray-50 rounded-lg p-4">

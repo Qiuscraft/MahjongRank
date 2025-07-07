@@ -29,7 +29,7 @@ export function getMatchLevelChinese(matchLevel: MatchLevel): string {
 }
 
 // 段位到比赛等级的映射
-const rankToMatchLevel: Record<Rank, MatchLevel> = {
+export const rankToMatchLevel: Record<Rank, MatchLevel> = {
   [Rank.Novice1]: MatchLevel.Bronze,
   [Rank.Novice2]: MatchLevel.Bronze,
   [Rank.Novice3]: MatchLevel.Bronze,
@@ -48,7 +48,7 @@ const rankToMatchLevel: Record<Rank, MatchLevel> = {
 };
 
 // 比赛等级推荐最低段位
-const matchLevelMinRank: Record<MatchLevel, Rank> = {
+export const matchLevelMinRank: Record<MatchLevel, Rank> = {
   [MatchLevel.Bronze]: Rank.Novice1,
   [MatchLevel.Silver]: Rank.Practitioner1,
   [MatchLevel.Gold]: Rank.Expert1,
@@ -66,7 +66,7 @@ const rankBonusConfig = {
 };
 
 // 4顺位扣分配置
-const rank4thPenaltyConfig = {
+export const rank4thPenaltyConfig = {
   [Rank.Novice1]: { east: 0, south: 0 },
   [Rank.Novice2]: { east: 0, south: 0 },
   [Rank.Novice3]: { east: 0, south: 0 },
