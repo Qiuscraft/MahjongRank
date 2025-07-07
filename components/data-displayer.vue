@@ -335,6 +335,11 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
     sortOrder.value = 'desc';
   }
 };
+
+// 判断是否为初心或雀士段位（这些段位不会掉段）
+const isNoRankDownRank = computed(() => {
+  return props.player.rank.startsWith('novice_') || props.player.rank.startsWith('practitioner_');
+});
 </script>
 
 <template>
@@ -345,6 +350,12 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
         <div class="bg-gray-50 rounded-lg p-4">
           <div class="text-sm text-gray-600">段位</div>
           <div class="text-lg font-bold text-gray-800">{{getRankChineseName(player.rank)}} ({{player.pt}}/{{getPromotionPt(player.rank)}})</div>
+          <div v-if="isNoRankDownRank" class="mt-1 text-xs px-2 py-1 inline-flex items-center rounded-md bg-blue-50 text-blue-700 border border-blue-100">
+            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            初心和雀士不会掉段
+          </div>
         </div>
         <div class="bg-gray-50 rounded-lg p-4">
           <div class="text-sm text-gray-600">排名</div>
