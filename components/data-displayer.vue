@@ -482,7 +482,7 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
         <!-- 顺位统计详情 -->
         <div class="mt-auto grid grid-cols-5 gap-2 text-center">
           <div class="bg-white rounded p-1.5 shadow-sm">
-            <div class="text-xs text-gray-500">总局数</div>
+            <div class="text-xs text-gray-500">总数</div>
             <div class="font-bold text-gray-800 text-sm">{{ data.length }}</div>
           </div>
           <div class="bg-white rounded p-1.5 shadow-sm">
