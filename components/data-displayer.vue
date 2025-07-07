@@ -489,7 +489,7 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
       <!-- 右侧图表区域 -->
       <div class="w-full lg:w-2/5 bg-gray-50 rounded-lg p-4 flex flex-col h-full" v-if="data.length > 0">
         <!-- 饼图容器，增加高度 -->
-        <div class="chart-container mx-auto" style="height:285px;">
+        <div class="chart-container mx-auto">
           <Pie :data="rankDistribution" :options="chartOptions" />
         </div>
 
@@ -519,7 +519,7 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
       </div>
 
       <!-- 无数据时的占位内容 -->
-      <div class="w-full lg:w-1/3 bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center min-h-[400px]" v-else>
+      <div class="w-full lg:w-1/3 bg-gray-50 rounded-lg p-6 flex flex-col items-center justify-center" v-else>
         <div class="text-center">
           <!-- 图标 -->
           <div class="mb-6">
