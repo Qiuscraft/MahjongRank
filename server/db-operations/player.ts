@@ -81,6 +81,8 @@ export async function updatePlayerPt(playerId: string, ptDelta: number): Promise
     const rankConfig = getRankConfig(currentRank);
     const isLowestRank = RANK_ORDER.indexOf(currentRank) === 0;
     const isHighestRank = RANK_ORDER.indexOf(currentRank) === RANK_ORDER.length - 1;
+    // 判断是否为初心或雀士段位
+    const isNoviceOrPractitioner = currentRank.startsWith('novice_') || currentRank.startsWith('practitioner_');
 
     if (newPt >= rankConfig.promotionPt && !isHighestRank) {
       // 升级逻辑
@@ -90,8 +92,8 @@ export async function updatePlayerPt(playerId: string, ptDelta: number): Promise
 
       currentRank = nextRank;
       newPt = nextRankConfig.initialPt + excess;
-    } else if (newPt < 0 && !isLowestRank) {
-      // 降级逻辑
+    } else if (newPt < 0 && !isLowestRank && !isNoviceOrPractitioner) {
+      // 降级逻辑 - 只有非初心/雀士段位才会降级
       const deficit = Math.abs(newPt);
       const previousRank = getPreviousRank(currentRank);
       const previousRankConfig = getRankConfig(previousRank);
@@ -100,8 +102,8 @@ export async function updatePlayerPt(playerId: string, ptDelta: number): Promise
       newPt = previousRankConfig.initialPt - deficit;
     } else {
       // 处理边界情况
-      if (newPt < 0 && isLowestRank) {
-        // 最低段位分数低于0，重置为0
+      if (newPt < 0) {
+        // 初心/雀士段位或最低段位分数低于0，重置为0
         newPt = 0;
       } else if (newPt >= rankConfig.promotionPt && isHighestRank) {
         // 最高段位分数超出升级分数，重置为升级分数
