@@ -437,28 +437,14 @@ const toggleSort = (field: 'wins' | 'total' | 'winRate') => {
                     {{ stat.opponentName }}
                   </td>
                   <td class="px-3 py-2 whitespace-nowrap">
-                    <div class="flex items-center gap-2">
-                      <span :class="{
-                        'text-green-600 font-semibold': stat.winRate >= 60,
-                        'text-blue-600 font-semibold': stat.winRate >= 50 && stat.winRate < 60,
-                        'text-orange-600 font-semibold': stat.winRate >= 40 && stat.winRate < 50,
-                        'text-red-600 font-semibold': stat.winRate < 40
-                      }">
-                        {{ stat.winRate }}%
-                      </span>
-                      <div class="w-full bg-gray-200 rounded-full h-2 max-w-[60px]">
-                        <div
-                          :class="{
-                            'bg-green-500': stat.winRate >= 60,
-                            'bg-blue-500': stat.winRate >= 50 && stat.winRate < 60,
-                            'bg-orange-500': stat.winRate >= 40 && stat.winRate < 50,
-                            'bg-red-500': stat.winRate < 40
-                          }"
-                          class="h-2 rounded-full transition-all duration-300"
-                          :style="{ width: stat.winRate + '%' }"
-                        ></div>
-                      </div>
-                    </div>
+                    <span :class="{
+                      'text-green-600 font-semibold': stat.winRate >= 60,
+                      'text-blue-600 font-semibold': stat.winRate >= 50 && stat.winRate < 60,
+                      'text-orange-600 font-semibold': stat.winRate >= 40 && stat.winRate < 50,
+                      'text-red-600 font-semibold': stat.winRate < 40
+                    }">
+                      {{ stat.winRate }}%
+                    </span>
                   </td>
                   <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-900">
                     {{ stat.wins }}/{{ stat.total }}
