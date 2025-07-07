@@ -139,6 +139,7 @@ function sortInnerData() {
 }
 
 async function loadData() {
+  selectingPlayer.value = undefined
   try {
     data.value = await $fetch('/api/v1/match-records', {
       method: 'GET',
