@@ -444,6 +444,12 @@ const nextLevelPoints = computed(() => {
               <span class="text-orange-600">{{ nextLevelPoints[2] }}</span>/
               <span class="text-red-600">{{ nextLevelPoints[3] }}</span>
             </div>
+            <div class="text-xs text-gray-500 mt-2 italic">
+              <svg class="w-3.5 h-3.5 inline-block mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              比赛等级由4名玩家中段位最高者决定
+            </div>
           </div>
         </div>
         <div class="bg-gray-50 rounded-lg p-4">
