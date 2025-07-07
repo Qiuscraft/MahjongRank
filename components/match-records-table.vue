@@ -76,7 +76,6 @@ function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellVal
         :row-class-name="tableRowClassName"
         :default-sort="{ prop: 'created_at', order: 'descending' }"
         class="w-full"
-        stripe
         header-row-class-name="bg-gray-50"
       >
         <el-table-column
