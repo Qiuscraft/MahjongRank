@@ -36,7 +36,7 @@
       </div>
 
       <!-- 数据展示区域 -->
-      <div v-if="selectingName && selectingPlayer" class="space-y-8">
+      <div v-if="selectingName && selectingPlayer && !loading" class="space-y-8">
         <!-- 统计数据卡片 -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
           <div class="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
@@ -138,8 +138,10 @@ function sortInnerData() {
   });
 }
 
+const loading = ref(false)
+
 async function loadData() {
-  selectingPlayer.value = undefined
+  loading.value = true
   try {
     data.value = await $fetch('/api/v1/match-records', {
       method: 'GET',
@@ -155,6 +157,8 @@ async function loadData() {
     }))[0];
   } catch (error: any) {
     ElMessage.error(`获取比赛记录失败：${error.data.message || '未知错误。'}`);
+  } finally {
+    loading.value = false
   }
   sortInnerData();
 }
