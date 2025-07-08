@@ -58,6 +58,12 @@
         </div>
       </div>
 
+      <!-- 加载动画 -->
+      <div v-else-if="loading" class="flex flex-col items-center justify-center py-12">
+        <div class="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+        <p class="text-indigo-600 font-medium">正在加载数据...</p>
+      </div>
+
       <!-- 空状态提示 -->
       <div v-else-if="!selectingName">
         <leader-board :players="players" />
