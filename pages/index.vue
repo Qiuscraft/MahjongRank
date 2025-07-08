@@ -31,7 +31,7 @@
       <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
         <div class="max-w-md mx-auto">
           <label class="block text-sm font-medium text-gray-700 mb-2">搜索玩家</label>
-          <name-searcher v-model="inputtingName" @select="handleNameSelect" />
+          <name-searcher v-model="inputtingName" @select="handleNameSelect" @clear="handleNameClear" />
         </div>
       </div>
 
@@ -91,6 +91,12 @@ async function handleNameSelect(item: any) {
     await router.push({query: {...route.query, name: selectedName}});
     await loadData()
   }
+}
+
+async function handleNameClear() {
+  selectingName.value = '';
+  selectingPlayer.value = undefined;
+  await router.push({query: {...route.query, name: ''}});
 }
 
 onMounted(async () => {

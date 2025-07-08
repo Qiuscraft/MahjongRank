@@ -43,11 +43,16 @@ function search(queryString: string) {
 }
 
 const emit = defineEmits<{
-  select: [item: any]
+  select: [item: any],
+  clear: any,
 }>()
 
 function handleSelect(item: any) {
   emit('select', item)
+}
+
+function handleClear() {
+  emit('clear')
 }
 
 onMounted(async () => {
@@ -62,6 +67,7 @@ onMounted(async () => {
       :fetch-suggestions="search"
       :placeholder="placeholderText"
       @select="handleSelect"
+      @clear="handleClear"
       class="w-full"
       size="large"
       clearable
