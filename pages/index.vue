@@ -59,10 +59,8 @@
       </div>
 
       <!-- 空状态提示 -->
-      <div v-else-if="!selectingName" class="text-center py-16">
-        <div class="text-gray-400 text-6xl mb-4">🎯</div>
-        <h3 class="text-xl font-medium text-gray-600 mb-2">开始搜索</h3>
-        <p class="text-gray-500">请在上方搜索框中输入玩家姓名</p>
+      <div v-else-if="!selectingName">
+        <leader-board :players="players" />
       </div>
     </div>
   </div>
@@ -98,6 +96,8 @@ async function handleNameSelect(item: any) {
 onMounted(async () => {
   if (route.query.name) {
     await handleNameSelect(route.query.name);
+  } else {
+    await loadPlayers()
   }
 })
 
@@ -163,6 +163,18 @@ async function loadData() {
   sortInnerData();
 }
 
+const players = ref<Player[]>([]);
+
+async function loadPlayers() {
+  try {
+    players.value = await $fetch<Player[]>(`/api/v1/players`, {
+      method: 'GET',
+    })
+  } catch (error: any) {
+    ElMessage.error(`获取玩家列表失败：${error.data.message || '未知错误。'}`)
+    players.value = []
+  }
+}
 </script>
 
 <style>
