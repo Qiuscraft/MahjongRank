@@ -1,6 +1,7 @@
 <template>
   <div v-if="players && players.length > 0" class="space-y-6">
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+    <!-- 电脑端表格版本 - 只在大屏幕上显示 -->
+    <div class="hidden lg:block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
       <div class="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
         <h3 class="text-lg font-semibold text-gray-800">排行榜</h3>
         <span class="text-sm text-gray-500">共 {{ players.length }} 名玩家</span>
@@ -67,7 +68,12 @@
     </div>
 
     <!-- 移动端适配版本 - 在小屏幕上显示卡片式布局 -->
-    <div class="lg:hidden space-y-3 mt-4">
+    <div class="lg:hidden space-y-3">
+      <div class="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
+        <h3 class="text-lg font-semibold text-gray-800">排行榜</h3>
+        <span class="text-sm text-gray-500">共 {{ players.length }} 名玩家</span>
+      </div>
+
       <div v-for="(player, index) in sortedPlayers.slice(0, 10)" :key="player._id"
            class="bg-white rounded-lg shadow-sm border border-gray-200 p-3 flex items-center"
            :class="{'border-yellow-300 shadow-yellow-100': index === 0}">
