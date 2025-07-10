@@ -170,7 +170,7 @@ function getRankBgClass(position: number): string {
 // 对比赛记录进行排序，按照创建时间降序
 const sortedData = computed(() => {
   return [...props.data].sort((a, b) => {
-    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
   });
 });
 </script>
