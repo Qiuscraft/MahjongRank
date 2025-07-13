@@ -105,6 +105,7 @@ async function handleNameSelect(item: any) {
 async function handleNameClear() {
   selectingName.value = '';
   selectingPlayer.value = undefined;
+  inputtingName.value = '';
   await router.push({query: {...route.query, name: ''}});
 }
 
