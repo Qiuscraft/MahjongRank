@@ -94,7 +94,10 @@ async function handleNameSelect(item: any) {
   const selectedName = item?.value || item;
   if (selectedName) {
     selectingName.value = selectedName;
-    await router.push({query: {...route.query, name: selectedName}});
+    inputtingName.value = selectedName;
+    if (route.query.name !== selectedName) {
+      await router.push({query: {...route.query, name: selectedName}});
+    }
     await loadData()
   }
 }
@@ -104,6 +107,14 @@ async function handleNameClear() {
   selectingPlayer.value = undefined;
   await router.push({query: {...route.query, name: ''}});
 }
+
+watch(() => route.query.name, async () => {
+  if (route.query.name) {
+    await handleNameSelect(route.query.name);
+  } else {
+    await loadPlayers()
+  }
+})
 
 onMounted(async () => {
   if (route.query.name) {

@@ -26,7 +26,7 @@
           <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="(player, index) in sortedPlayers" :key="player._id"
                 class="hover:bg-gray-50 transition-colors"
-                :class="{'bg-yellow-50': index === 0, 'bg-gray-50': index % 2 !== 0 && index !== 0}">
+                :class="{'bg-gray-50': index % 2 !== 0 && index !== 0}">
               <td class="px-4 py-3 whitespace-nowrap">
                 <!-- 名次展示，前三名有特殊样式 -->
                 <div v-if="index < 3"
@@ -43,7 +43,14 @@
                 </div>
               </td>
               <td class="px-4 py-3 whitespace-nowrap">
-                <div class="text-sm font-medium text-gray-900">{{ player.name }}</div>
+                <div class="text-sm font-medium text-gray-900">
+                  <NuxtLink
+                    :to="{path: route.path, query: { ...route.query, name: player.name }}"
+                    class="hover:text-blue-500"
+                  >
+                    {{ player.name }}
+                  </NuxtLink>
+                </div>
               </td>
               <td class="px-4 py-3">
                 <div class="mb-1 flex items-center">
@@ -91,7 +98,14 @@
         </div>
 
         <div class="flex-grow">
-          <div class="font-medium text-gray-900">{{ player.name }}</div>
+          <div class="font-medium text-gray-900">
+            <NuxtLink
+              :to="{path: route.path, query: { ...route.query, name: player.name }}"
+              class="hover:text-blue-500"
+            >
+              {{ player.name }}
+            </NuxtLink>
+          </div>
           <div class="flex items-center mt-1">
             <div class="w-2 h-2 rounded-full mr-1" :style="{ backgroundColor: getRankColor(player.rank) }"></div>
             <span class="text-xs font-medium" :style="{ color: getRankColor(player.rank) }">
@@ -121,6 +135,8 @@ import { computed } from 'vue'
 import type { PropType } from 'vue'
 import { type Player } from '~/types/player'
 import { getRankChineseName, RANK_ORDER, getPromotionPt, getInitialPt, Rank } from '~/utils/player-rank'
+
+const route = useRoute()
 
 const props = defineProps({
   players: {
