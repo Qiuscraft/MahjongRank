@@ -112,6 +112,7 @@ watch(() => route.query.name, async () => {
   if (route.query.name) {
     await handleNameSelect(route.query.name);
   } else {
+    await handleNameClear()
     await loadPlayers()
   }
 })
