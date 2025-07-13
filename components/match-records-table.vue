@@ -53,11 +53,6 @@ function formatCreatedAt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, 
   return `${year}-${month}-${day}`;
 }
 
-// 为表格排序提供原始日期时间戳
-function sortByDate(a: Date | string, b: Date | string): number {
-  return new Date(b).getTime() - new Date(a).getTime();
-}
-
 // 为卡片视图准备的格式化日期方法（包含时间）
 function formatCreatedAtWithTime(dateString: string): string {
   const date = new Date(dateString);
@@ -170,7 +165,7 @@ function getRankBgClass(position: number): string {
 // 对比赛记录进行排序，按照创建时间降序
 const sortedData = computed(() => {
   return [...props.data].sort((a, b) => {
-    return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 });
 </script>
@@ -183,7 +178,6 @@ const sortedData = computed(() => {
         :data="sortedData"
         empty-text="暂无数据"
         :row-class-name="tableRowClassName"
-        :default-sort="{ prop: 'created_at', order: 'descending' }"
         class="w-full"
         header-row-class-name="bg-gray-50"
       >
@@ -191,8 +185,6 @@ const sortedData = computed(() => {
           prop="created_at"
           :formatter="formatCreatedAt"
           label="录入时间"
-          sortable
-          :sort-method="sortByDate"
           class-name="text-sm"
           width="110"
         />
