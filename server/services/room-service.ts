@@ -29,3 +29,19 @@ export function riich(player: RoomPlayer, allow_negative_points: boolean = false
   player.points = player.points - 1000;
   riich_pot += 1000;
 }
+
+function getDealer(): RoomPlayer {
+  if (!east_start_player || !south_start_player || !west_start_player || !north_start_player) {
+    throw createMyBackendError(ErrorCause.RoomNotSet);
+  }
+  switch (round) {
+    case Round.East_1: return east_start_player;
+    case Round.East_2: return south_start_player;
+    case Round.East_3: return west_start_player;
+    case Round.East_4: return north_start_player;
+    case Round.South_1: return east_start_player;
+    case Round.South_2: return south_start_player;
+    case Round.South_3: return west_start_player;
+    case Round.South_4: return north_start_player;
+  }
+}
