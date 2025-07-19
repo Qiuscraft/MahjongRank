@@ -215,7 +215,7 @@ const sortedData = computed(() => {
         <!-- 第1位 -->
         <el-table-column label="1位" header-align="center">
           <el-table-column prop="record_1.player_name" label="玩家" />
-          <el-table-column prop="record_1.pt" label="PT" class-name="font-medium">
+          <el-table-column prop="record_1.pt" label="PT" width="60" class-name="font-medium">
             <template #default="scope">
               <span :class="getPtClassForPlayer(1, scope.row.record_1.player_name)">{{ formatPt(scope.row, undefined, scope.row.record_1.pt) }}</span>
             </template>
@@ -226,7 +226,7 @@ const sortedData = computed(() => {
         <!-- 第2位 -->
         <el-table-column label="2位" header-align="center">
           <el-table-column prop="record_2.player_name" label="玩家" />
-          <el-table-column prop="record_2.pt" label="PT" class-name="font-medium">
+          <el-table-column prop="record_2.pt" label="PT" width="60" class-name="font-medium">
             <template #default="scope">
               <span :class="getPtClassForPlayer(2, scope.row.record_2.player_name)">{{ formatPt(scope.row, undefined, scope.row.record_2.pt) }}</span>
             </template>
@@ -237,7 +237,7 @@ const sortedData = computed(() => {
         <!-- 第3位 -->
         <el-table-column label="3位" header-align="center">
           <el-table-column prop="record_3.player_name" label="玩家" />
-          <el-table-column prop="record_3.pt" label="PT" class-name="font-medium">
+          <el-table-column prop="record_3.pt" label="PT" width="60" class-name="font-medium">
             <template #default="scope">
               <span :class="getPtClassForPlayer(3, scope.row.record_3.player_name)">{{ formatPt(scope.row, undefined, scope.row.record_3.pt) }}</span>
             </template>
@@ -248,7 +248,7 @@ const sortedData = computed(() => {
         <!-- 第4位 -->
         <el-table-column label="4位" header-align="center">
           <el-table-column prop="record_4.player_name" label="玩家" />
-          <el-table-column prop="record_4.pt" label="PT" class-name="font-medium">
+          <el-table-column prop="record_4.pt" label="PT" width="60" class-name="font-medium">
             <template #default="scope">
               <span :class="getPtClassForPlayer(4, scope.row.record_4.player_name)">{{ formatPt(scope.row, undefined, scope.row.record_4.pt) }}</span>
             </template>
