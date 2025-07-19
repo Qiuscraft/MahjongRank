@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type {MatchRecord} from "~/types/match-record";
-import { StartDirection } from "~/types/match-record";
+import { StartDirection, MatchType } from "~/types/match-record";
 import type {TableColumnCtx} from "element-plus";
 import {getRankChineseName} from "~/utils/player-rank";
 import {determineMatchLevel, getMatchLevelChinese} from "~/utils/pt-calculator";
@@ -104,6 +104,18 @@ function formatMatchLevel(row: MatchRecord): string {
   return getMatchLevelChinese(matchLevel);
 }
 
+// 格式化比赛类型
+function formatMatchType(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellValue: MatchType): string {
+  switch (cellValue) {
+    case MatchType.East:
+      return '东风场';
+    case MatchType.South:
+      return '南风场';
+    default:
+      return '';
+  }
+}
+
 function formatPt(row: MatchRecord, column: TableColumnCtx<MatchRecord>, cellValue: number): string {
   return cellValue < 0 ? cellValue.toString() : `+${cellValue}`;
 }
@@ -193,6 +205,12 @@ const sortedData = computed(() => {
           :formatter="formatMatchLevel"
           class-name="text-sm font-medium"
         />
+        <el-table-column
+          prop="match_type"
+          :formatter="formatMatchType"
+          label="比赛类型"
+          class-name="text-sm font-medium"
+        />
 
         <!-- 第1位 -->
         <el-table-column label="1位" header-align="center">
@@ -247,7 +265,10 @@ const sortedData = computed(() => {
         <!-- 卡片头部：日期和比赛等级 -->
         <div class="flex justify-between items-center mb-3">
           <div class="text-sm text-gray-600">{{ formatCreatedAtWithTime(record.created_at) }}</div>
-          <div class="bg-gray-100 px-2 py-1 rounded text-xs font-medium">{{ formatMatchLevel(record) }}</div>
+          <div class="flex gap-2">
+            <div class="bg-gray-100 px-2 py-1 rounded text-xs font-medium">{{ formatMatchLevel(record) }}</div>
+            <div class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs font-medium">{{ formatMatchType(record, undefined, record.match_type) }}</div>
+          </div>
         </div>
 
         <!-- 卡片内容：四位玩家 -->
