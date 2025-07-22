@@ -158,16 +158,10 @@ const sortedPlayers = computed(() => {
 
 /** 计算进度百分比 */
 const getProgress = (rank: Rank, pt: number): number => {
-  const initial = getInitialPt(rank)
   const promotion = getPromotionPt(rank)
 
-  // 如果当前分数低于段位初始分，进度条显示为0%
-  if (pt < initial) {
-    return 0
-  }
-
-  const percent = ((pt - initial) / (promotion - initial)) * 100
-  return Math.min(Math.max(percent, 0), 100)
+  const percent = (pt / promotion) * 100
+  return percent
 }
 
 /** 根据段位返回对应颜色 */
