@@ -129,7 +129,7 @@ const startDirections = [
 ]
 
 const matchTypes = [
-  { label: '东风战', value: MatchType.East },
+  { label: '东风场', value: MatchType.East },
   { label: '南风场', value: MatchType.South },
 ]
 
