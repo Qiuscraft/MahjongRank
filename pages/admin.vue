@@ -70,6 +70,32 @@
 
             <!-- Match Type and Submit -->
             <div class="mt-8 lg:mt-0 lg:w-1/5 flex flex-col justify-center gap-y-6">
+              <!-- 自动计算状态提示 -->
+              <div class="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <div class="flex items-center justify-between mb-2">
+                  <span class="text-sm font-medium text-gray-700">自动计算</span>
+                  <div class="flex items-center">
+                    <div :class="['w-2 h-2 rounded-full mr-2', isAutoCalculateEnabled ? 'bg-green-500' : 'bg-red-500']"></div>
+                    <span class="text-xs" :class="isAutoCalculateEnabled ? 'text-green-600' : 'text-red-600'">
+                      {{ isAutoCalculateEnabled ? '已启用' : '已关闭' }}
+                    </span>
+                  </div>
+                </div>
+                <p class="text-xs text-gray-600 mb-2">
+                  {{ isAutoCalculateEnabled ? '第四个玩家点数将自动计算' : '第四个玩家点数需手动输入' }}
+                </p>
+                <el-button
+                  v-if="!isAutoCalculateEnabled"
+                  @click="enableAutoCalculate"
+                  size="small"
+                  type="primary"
+                  plain
+                  class="w-full text-xs"
+                >
+                  重新启用自动计算
+                </el-button>
+              </div>
+
               <el-form-item label="类型">
                 <el-select v-model="matchRecordForm.match_type" placeholder="请选择" class="w-full">
                   <el-option v-for="item in matchTypes" :key="item.value" :label="item.label" :value="item.value" />
@@ -145,7 +171,52 @@ const matchRecordForm = reactive({
   match_type: MatchType.South,
 })
 
+// 自动计算第四个玩家点数的控制变量
+const isAutoCalculateEnabled = ref(true)
+
 const isAddMatchLoading = ref(false)
+
+// 监听前三个玩家的点数变化，自动计算第四个玩家的点数
+watch(
+  () => [
+    matchRecordForm.records[0].points,
+    matchRecordForm.records[1].points,
+    matchRecordForm.records[2].points,
+  ],
+  ([p1, p2, p3]) => {
+    if (isAutoCalculateEnabled.value) {
+      const totalPoints = 100000
+      matchRecordForm.records[3].points = totalPoints - p1 - p2 - p3
+    }
+  },
+  { immediate: true }
+)
+
+// 监听第四个玩家点数的手动修改
+watch(
+  () => matchRecordForm.records[3].points,
+  (newValue, oldValue) => {
+    // 如果第四个玩家的点数被手动修改（不是通过自动计算设置的）
+    if (isAutoCalculateEnabled.value && oldValue !== undefined) {
+      const expectedPoints = 100000 -
+        matchRecordForm.records[0].points -
+        matchRecordForm.records[1].points -
+        matchRecordForm.records[2].points
+
+      // 如果手动修改的值与期望的自动计算值不同，则关闭自动计算
+      if (newValue !== expectedPoints) {
+        isAutoCalculateEnabled.value = false
+        ElMessage.info('已关闭第四个玩家点数自动计算')
+      }
+    }
+  }
+)
+
+// 重置表单时重新启用自动计算
+const resetForm = () => {
+  matchRecordForm.records = createInitialRecords()
+  isAutoCalculateEnabled.value = true
+}
 
 const addMatchRecord = async () => {
   isAddMatchLoading.value = true
@@ -165,8 +236,8 @@ const addMatchRecord = async () => {
     })
 
     ElMessage.success('比赛记录添加成功！')
-    // Reset form
-    matchRecordForm.records = createInitialRecords()
+    // Reset form and re-enable auto calculation
+    resetForm()
   } catch (error: any) {
     ElMessage.error(error.data.statusMessage || '添加比赛记录失败。')
   } finally {
@@ -207,5 +278,11 @@ const login = async () => {
   } finally {
     isLoggingIn.value = false
   }
+}
+
+// 重新启用自动计算
+const enableAutoCalculate = () => {
+  isAutoCalculateEnabled.value = true
+  ElMessage.success('已重新启用第四个玩家点数自动计算')
 }
 </script>
