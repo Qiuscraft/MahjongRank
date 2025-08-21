@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
         throw createMyBackendError(ErrorCause.PlayerNotFound);
       }
     }
-    return searchPlayer(search_name);
+    return await searchPlayer(search_name);
   } catch (error) {
     if (isMyError(error)) {
       throw createMyAPIError(error);
